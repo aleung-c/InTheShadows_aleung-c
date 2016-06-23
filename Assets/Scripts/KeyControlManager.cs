@@ -17,8 +17,14 @@ public class KeyControlManager : MonoBehaviour {
 	public KeyCode		StrafeRight;
 	public KeyCode		StrafeRightAlt;
 
-	// Use this for initialization
-	void Start () {
+    public KeyCode      EscapeKey;
+    public KeyCode      EscapeKeyAlt;
+
+    public KeyCode      InteractKey;
+    public KeyCode      InteractKeyAlt;
+
+    // Use this for initialization
+    void Start () {
 	
 	}
 	

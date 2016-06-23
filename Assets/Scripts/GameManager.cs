@@ -2,8 +2,10 @@
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
-	public static GameManager instance = null;
+	public static GameManager       instance = null;
+    public GameSettings             GameSettings;
 	public KeyControlManager		KeyManager;
+    public GameObject               PlayerGameObject;
 
 	//Awake is always called before any Start functions
 	void Awake()
@@ -21,9 +23,11 @@ public class GameManager : MonoBehaviour {
 	//Initializes the game for each level.
 	void InitGame()
 	{
-		// load save ... etc
-		KeyManager = GetComponent<KeyControlManager> ();
-	}	
+        // load save ... etc
+        GameSettings = GetComponent<GameSettings>();
+        KeyManager = GetComponent<KeyControlManager> ();
+        PlayerGameObject = GameObject.Find("Player");
+    }	
 	
 	//Update is called every frame.
 	void Update()
