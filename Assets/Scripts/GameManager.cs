@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 	public static GameManager instance = null;
+	public KeyControlManager		KeyManager;
 
 	//Awake is always called before any Start functions
 	void Awake()
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour {
 	void InitGame()
 	{
 		// load save ... etc
-		
+		KeyManager = GetComponent<KeyControlManager> ();
 	}	
 	
 	//Update is called every frame.
