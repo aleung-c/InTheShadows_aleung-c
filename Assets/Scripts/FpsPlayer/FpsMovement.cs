@@ -52,7 +52,7 @@ public class FpsMovement : MonoBehaviour {
 	void HandleMovementInput()
 	{
 		// first press forward
-		if (Input.GetKey (MoveForward) || Input.GetKeyDown (MoveForwardAlt)) {
+		if (Input.GetKey (MoveForward) || Input.GetKey (MoveForwardAlt)) {
 			MovementDirection = PlayerCam.transform.forward;
 			if (Input.GetKey (StrafeLeft) || Input.GetKey (StrafeLeftAlt))
 			{
@@ -64,20 +64,44 @@ public class FpsMovement : MonoBehaviour {
 			}
 			PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
 		}
-		else if (Input.GetKey (MoveBackward) || Input.GetKeyDown (MoveBackwardAlt)) {
+		// first press backward
+		else if (Input.GetKey (MoveBackward) || Input.GetKey (MoveBackwardAlt)) {
 			MovementDirection = -PlayerCam.transform.forward;
+			if (Input.GetKey (StrafeLeft) || Input.GetKey (StrafeLeftAlt))
+			{
+				MovementDirection = Quaternion.AngleAxis(45, Vector3.up) * MovementDirection;
+			}
+			else if (Input.GetKey (StrafeRight) || Input.GetKey (StrafeRightAlt))
+			{
+				MovementDirection = Quaternion.AngleAxis(-45, Vector3.up) * MovementDirection;
+			}
 			PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
 		}
-
 		// first press Strafe left
-		if (Input.GetKey (StrafeLeft) || Input.GetKeyDown (StrafeLeftAlt)) {
+		else if (Input.GetKey (StrafeLeft) || Input.GetKey (StrafeLeftAlt)) {
 			MovementDirection = -PlayerCam.transform.right;
+			if (Input.GetKey (MoveForward) || Input.GetKey (MoveForwardAlt))
+			{
+				MovementDirection = Quaternion.AngleAxis(-45, Vector3.up) * MovementDirection;
+			}
+			else if (Input.GetKey (MoveBackward) || Input.GetKey (MoveBackwardAlt))
+			{
+				MovementDirection = Quaternion.AngleAxis(45, Vector3.up) * MovementDirection;
+			}
 			PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
 		}
-
 		// first press Strafe Right
-		if (Input.GetKey (StrafeRight) || Input.GetKeyDown (StrafeRightAlt)) {
+		else if (Input.GetKey (StrafeRight) || Input.GetKey (StrafeRightAlt)) {
 			MovementDirection = PlayerCam.transform.right;
+			if (Input.GetKey (MoveForward) || Input.GetKey (MoveForwardAlt))
+			{
+				MovementDirection = Quaternion.AngleAxis(-45, Vector3.up) * MovementDirection;
+			}
+			else if (Input.GetKey (MoveBackward) || Input.GetKey (MoveBackwardAlt))
+			{
+				MovementDirection = Quaternion.AngleAxis(45, Vector3.up) * MovementDirection;
+			}
+
 			PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
 		}
 
