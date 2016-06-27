@@ -2,18 +2,29 @@
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// Start menu script. Controller for Menu states.
+/// </summary>
 public class StartMenuScript : MonoBehaviour {
+	[Header("Main Menu references")]
     [SerializeField]
     private GameObject  MainMenuPanel;
     [SerializeField]
     private Animator    MainPanelAnimator;
+	[Header("Options Menu references")]
     [SerializeField]
     private GameObject  OptionPanel;
     [SerializeField]
-    private Animator  OptionPanelAnimator;
+    private Animator  	OptionPanelAnimator;
+	[Header("Puzzle Menu references")]
+	[SerializeField]
+	private GameObject  PuzzlePanel;
+	[SerializeField]
+	private Animator    PuzzlePanelAnimator;
 
     public bool         CanInteract = true;
     public bool         OutOfMenu = false;
+	public bool			InPuzzleMenu = false;
 
 	// Use this for initialization
 	void Start () {
@@ -21,18 +32,31 @@ public class StartMenuScript : MonoBehaviour {
         MainPanelAnimator = MainMenuPanel.GetComponent<Animator>();
         OptionPanel = transform.Find("OptionMenuPanelContainer").gameObject;
         OptionPanelAnimator = OptionPanel.GetComponent<Animator>();
+		PuzzlePanel = transform.Find("PuzzleMenuPanel").gameObject;
+		PuzzlePanelAnimator = PuzzlePanel.GetComponent<Animator>();
+
+		// Set all as it should be
+		MainMenuPanel.SetActive (true);
+		OptionPanel.SetActive (false);
+		PuzzlePanel.SetActive (false);
     }
 	
 	// Update is called once per frame
 	void Update () {
-	    if (OutOfMenu == true && Input.GetKeyDown(KeyCode.Escape))
+	    if (OutOfMenu == true && InPuzzleMenu == false && Input.GetKeyDown(KeyCode.Escape))
         {
             OutOfMenu = false;
+			GameManager.instance.GameController.InMenu = true;
             MainMenuPanel.SetActive(true);
             MainPanelAnimator.SetTrigger("AppearAll");
             GameManager.instance.KeyManager.MouseSensitivityX /= 2.0F;
             GameManager.instance.KeyManager.MouseSensitivityY /= 2.0F;
         }
+
+		if (InPuzzleMenu == true && Input.GetKeyDown (KeyCode.Escape))
+		{
+			GameManager.instance.GameController.PuzzleToFpsMode();
+		}
 	}
 
     // METHODS FOR THE MAIN MENU SCREEN --------------------------------//
@@ -42,6 +66,7 @@ public class StartMenuScript : MonoBehaviour {
             CanInteract = false;
             MainPanelAnimator.SetTrigger("HideAll");
             OutOfMenu = true;
+			GameManager.instance.GameController.InMenu = false;
             GameManager.instance.KeyManager.MouseSensitivityX *= 2.0F;
             GameManager.instance.KeyManager.MouseSensitivityY *= 2.0F;
         }
@@ -52,6 +77,7 @@ public class StartMenuScript : MonoBehaviour {
             CanInteract = false;
             MainPanelAnimator.SetTrigger("HideAll");
             OutOfMenu = true;
+			GameManager.instance.GameController.InMenu = false;
             GameManager.instance.KeyManager.MouseSensitivityX *= 2.0F;
             GameManager.instance.KeyManager.MouseSensitivityY *= 2.0F;
         }
@@ -83,4 +109,15 @@ public class StartMenuScript : MonoBehaviour {
             OptionPanel.SetActive(true);
         }
     }
+
+	// PUZZLE MENU CALLS AND METHODS
+
+	public void StartPuzzleMenu(ShadowLevelObject SelectedLevel)
+	{
+		if (OutOfMenu == true)
+		{
+			PuzzlePanel.GetComponent<PuzzleMenuPanelScript> ().CurrentLevel = SelectedLevel;
+		}
+	}
+
 }

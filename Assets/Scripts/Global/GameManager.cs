@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour {
     public GameSettings             GameSettings;
 	public KeyControlManager		KeyManager;
     public GameObject               PlayerGameObject;
+	public GameObject				MenuGameObject;
+
+	// GameControllers
+	public GameController			GameController; // controls game states and mode switchings;
+	public CameraController			CameraController;
 
 	//Awake is always called before any Start functions
 	void Awake()
@@ -24,6 +29,9 @@ public class GameManager : MonoBehaviour {
 	void InitGame()
 	{
         // load save ... etc
+		MenuGameObject = GameObject.Find ("Menu").gameObject;
+		GameController = GameObject.Find ("GameController").GetComponent<GameController>();
+		CameraController = GameObject.Find ("CameraController").GetComponent<CameraController>();
         GameSettings = GetComponent<GameSettings>();
         KeyManager = GetComponent<KeyControlManager> ();
         PlayerGameObject = GameObject.Find("Player");
