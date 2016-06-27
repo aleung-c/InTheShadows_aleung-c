@@ -48,7 +48,8 @@ public class GameController : MonoBehaviour {
 		} else if (InPuzzleMode == false) { // == transitionning from puzzle to fps;
 			CanEnterInput = true;
 			ShadowLevelSelected.Playable = false;
-			MainPlayer.GetComponent<AdventurePlayer> ().IsControllable = true;
+            ShadowLevelSelected.StartPlaying();
+            MainPlayer.GetComponent<AdventurePlayer> ().IsControllable = true;
 			MainPlayer.GetComponent<FpsCameraControl> ().enabled = true;
 			MainPlayer.GetComponent<FpsMovement> ().enabled = true;
 			InFpsMode = true;

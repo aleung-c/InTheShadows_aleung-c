@@ -23,24 +23,16 @@ public class ShadowObject : MonoBehaviour {
 
 	public void RandomizeHorizontalRotation()
 	{
-		NewRotation.y = Random.Range (0.0F, 360.0F);
-		NewRotation.x = ObjRotation.transform.eulerAngles.x;
+        NewRotation.x = ObjRotation.transform.eulerAngles.x;
+        NewRotation.y = Random.Range (0.0F, 360.0F);
 		NewRotation.z = ObjRotation.transform.eulerAngles.z;
 		ObjRotation.transform.eulerAngles = NewRotation;
 	}
 
 	public void RandomizeVerticalRotation()
 	{
-		NewRotation.y = Random.Range (0.0F, 360.0F);
-		NewRotation.x = ObjRotation.transform.eulerAngles.x;
-		NewRotation.z = ObjRotation.transform.eulerAngles.z;
-		ObjRotation.transform.eulerAngles = NewRotation;
-	}
-
-	public void RandomizeX()
-	{
-		NewRotation.y = Random.Range (0.0F, 360.0F);
-		NewRotation.x = ObjRotation.transform.eulerAngles.x;
+        NewRotation.x = Random.Range(0.0F, 360.0F);
+        NewRotation.y = ObjRotation.transform.eulerAngles.y;
 		NewRotation.z = ObjRotation.transform.eulerAngles.z;
 		ObjRotation.transform.eulerAngles = NewRotation;
 	}

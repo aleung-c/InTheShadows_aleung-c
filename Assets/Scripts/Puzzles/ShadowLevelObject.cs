@@ -10,6 +10,7 @@ public class ShadowLevelObject : MonoBehaviour {
 	public int					PuzzleNumber;
 	public string				PuzzleName;
 	public GameObject			PuzzleCamera;
+    public float                RotationSpeed = 3.0F;
 
 	public bool					HasHorizontalRotation;
 	public bool					HasVerticalRotation;
@@ -21,13 +22,18 @@ public class ShadowLevelObject : MonoBehaviour {
 	public List<GameObject>		Forms = new List<GameObject>();
 
 	[Header("GamePlay State")]
-	public bool Playable = false;
+	public bool                 Playable = false;
+    [SerializeField]
+    private ShadowGamePlay      ShadowGameplay;
+    private ShadowGameWinCheck  ShadowGameWinCheck;
 
-	// Use this for pre-initialization
-	void Awake() {
+    // Use this for pre-initialization
+    void Awake() {
 		PuzzleCamera = transform.Find ("PuzzleCamera").gameObject;
 		FormContainer = transform.Find ("FormContainer").gameObject;
-	}
+        ShadowGameplay = GetComponent<ShadowGamePlay>();
+        ShadowGameWinCheck = GetComponent<ShadowGameWinCheck>();
+    }
 
 	void Start()
 	{
@@ -36,10 +42,16 @@ public class ShadowLevelObject : MonoBehaviour {
 
 	public void StartPlaying()
 	{
+        ShadowGameplay.enabled = true;
+        ShadowGameWinCheck.enabled = true;
+    }
 
-	}
+    public void ExitPlaying()
+    {
+        ShadowGameplay.enabled = false;
+    }
 
-	void InitializePuzzle()
+    void InitializePuzzle()
 	{
 		// init puzzle random settings etc ...
 		foreach (Transform child in FormContainer.transform) {

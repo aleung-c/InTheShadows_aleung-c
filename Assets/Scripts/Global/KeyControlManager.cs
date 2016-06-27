@@ -5,6 +5,7 @@ public class KeyControlManager : MonoBehaviour {
 	public float		MouseSensitivityX = 1.0F;
 	public float		MouseSensitivityY = 1.0F;
 
+    [Header("Fps Part")]
 	public KeyCode		MoveForward;
 	public KeyCode		MoveForwardAlt;
 
@@ -22,6 +23,13 @@ public class KeyControlManager : MonoBehaviour {
 
     public KeyCode      InteractKey;
     public KeyCode      InteractKeyAlt;
+
+    [Header("Puzzle Part")]
+    public KeyCode      VerticalPuzzleButton;
+    public KeyCode      VerticalPuzzleButtonAlt;
+
+    public KeyCode      DisplacementPuzzleButton;
+    public KeyCode      DisplacementPuzzleButtonAlt;
 
     // Use this for initialization
     void Start () {

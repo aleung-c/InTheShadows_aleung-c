@@ -32,9 +32,7 @@ public class FpsCameraControl : MonoBehaviour {
 		// set cam angle.
 		newMousePos.x = Input.GetAxis ("MouseVertical");
 		newMousePos.y = Input.GetAxis ("MouseHorizontal");
-		//Debug.Log (newMousePos.x.ToString ());
-
-		//NewCamAngle = Cam.transform.eulerAngles;
+        
 		NewCamAngle.x = -newMousePos.x * MouseSensitivityX * Time.deltaTime;
 		NewCamAngle.y = newMousePos.y * MouseSensitivityY * Time.deltaTime;
 		NewCamAngle.z = 0.0F;
@@ -42,14 +40,5 @@ public class FpsCameraControl : MonoBehaviour {
 		NewCamAngle = Cam.transform.eulerAngles;
 		NewCamAngle.z = 0.0F;
 		Cam.transform.eulerAngles = NewCamAngle;
-		// limit cam vertical orientation;
-		//Debug.Log (NewCamAngle.x);
-		/*if (NewCamAngle.x < 270.0F) {
-			NewCamAngle.x = 270.0F;
-		} else if (NewCamAngle.x > 90.0F) {
-			NewCamAngle.x = 90.0F;
-		}*/
-		// set cam transform;
-		//Cam.transform.eulerAngles = NewCamAngle;
 	}
 }
