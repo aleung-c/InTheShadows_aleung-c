@@ -21,6 +21,34 @@ ModelImporter:
     100026: Cube_012
     100028: Cube_013
     100030: Cube_014
+    100032: Cube_015
+    100034: Cube_016
+    100036: Cube_017
+    100038: Cube_018
+    100040: Pillar01
+    100042: Pillar02
+    100044: Pillar03
+    100046: Pillar04
+    100048: Pillar05
+    100050: Wall01
+    100052: Wall02
+    100054: Wall03
+    100056: Wall04
+    100058: Wall05
+    100060: Wall06
+    100062: Wall07
+    100064: Wall08
+    100066: Wall09
+    100068: Wall10
+    100070: Wall11
+    100072: WallSmall01
+    100074: WallSmall02
+    100076: WallSmall03
+    100078: Cube_000
+    100080: WallSimple01
+    100082: WallSimple02
+    100084: WallSimple03
+    100086: Wall12
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -37,6 +65,34 @@ ModelImporter:
     400026: Cube_012
     400028: Cube_013
     400030: Cube_014
+    400032: Cube_015
+    400034: Cube_016
+    400036: Cube_017
+    400038: Cube_018
+    400040: Pillar01
+    400042: Pillar02
+    400044: Pillar03
+    400046: Pillar04
+    400048: Pillar05
+    400050: Wall01
+    400052: Wall02
+    400054: Wall03
+    400056: Wall04
+    400058: Wall05
+    400060: Wall06
+    400062: Wall07
+    400064: Wall08
+    400066: Wall09
+    400068: Wall10
+    400070: Wall11
+    400072: WallSmall01
+    400074: WallSmall02
+    400076: WallSmall03
+    400078: Cube_000
+    400080: WallSimple01
+    400082: WallSimple02
+    400084: WallSimple03
+    400086: Wall12
     2300000: Cube
     2300002: Cube_001
     2300004: Cube_002
@@ -52,6 +108,34 @@ ModelImporter:
     2300024: Cube_012
     2300026: Cube_013
     2300028: Cube_014
+    2300030: Cube_015
+    2300032: Cube_016
+    2300034: Cube_017
+    2300036: Cube_018
+    2300038: Pillar01
+    2300040: Pillar02
+    2300042: Pillar03
+    2300044: Pillar04
+    2300046: Pillar05
+    2300048: Wall01
+    2300050: Wall02
+    2300052: Wall03
+    2300054: Wall04
+    2300056: Wall05
+    2300058: Wall06
+    2300060: Wall07
+    2300062: Wall08
+    2300064: Wall09
+    2300066: Wall10
+    2300068: Wall11
+    2300070: WallSmall01
+    2300072: WallSmall02
+    2300074: WallSmall03
+    2300076: Cube_000
+    2300078: WallSimple01
+    2300080: WallSimple02
+    2300082: WallSimple03
+    2300084: Wall12
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
@@ -67,6 +151,34 @@ ModelImporter:
     3300024: Cube_012
     3300026: Cube_013
     3300028: Cube_014
+    3300030: Cube_015
+    3300032: Cube_016
+    3300034: Cube_017
+    3300036: Cube_018
+    3300038: Pillar01
+    3300040: Pillar02
+    3300042: Pillar03
+    3300044: Pillar04
+    3300046: Pillar05
+    3300048: Wall01
+    3300050: Wall02
+    3300052: Wall03
+    3300054: Wall04
+    3300056: Wall05
+    3300058: Wall06
+    3300060: Wall07
+    3300062: Wall08
+    3300064: Wall09
+    3300066: Wall10
+    3300068: Wall11
+    3300070: WallSmall01
+    3300072: WallSmall02
+    3300074: WallSmall03
+    3300076: Cube_000
+    3300078: WallSimple01
+    3300080: WallSimple02
+    3300082: WallSimple03
+    3300084: Wall12
     4300000: Cube_002
     4300002: Cube
     4300004: Cube_003
@@ -82,6 +194,34 @@ ModelImporter:
     4300024: Cube_012
     4300026: Cube_013
     4300028: Cube_014
+    4300030: Cube_015
+    4300032: Cube_016
+    4300034: Cube_017
+    4300036: Cube_018
+    4300038: Pillar02
+    4300040: Wall07
+    4300042: Pillar03
+    4300044: Wall03
+    4300046: Wall05
+    4300048: Wall04
+    4300050: Wall06
+    4300052: Wall02
+    4300054: Wall10
+    4300056: Wall01
+    4300058: Pillar05
+    4300060: Pillar04
+    4300062: Wall11
+    4300064: WallSmall02
+    4300066: WallSmall03
+    4300068: WallSmall01
+    4300070: Pillar01
+    4300072: Wall08
+    4300074: Wall09
+    4300076: WallSimple01
+    4300078: Cube_000
+    4300080: WallSimple02
+    4300082: WallSimple03
+    4300084: Wall12
     7400000: Default Take
     9500000: //RootNode
   materials:
