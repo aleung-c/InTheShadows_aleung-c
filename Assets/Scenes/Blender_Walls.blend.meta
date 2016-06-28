@@ -49,6 +49,8 @@ ModelImporter:
     100082: WallSimple02
     100084: WallSimple03
     100086: Wall12
+    100088: SquarePillar01
+    100090: WallVertical01
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -93,6 +95,8 @@ ModelImporter:
     400082: WallSimple02
     400084: WallSimple03
     400086: Wall12
+    400088: SquarePillar01
+    400090: WallVertical01
     2300000: Cube
     2300002: Cube_001
     2300004: Cube_002
@@ -136,6 +140,8 @@ ModelImporter:
     2300080: WallSimple02
     2300082: WallSimple03
     2300084: Wall12
+    2300086: SquarePillar01
+    2300088: WallVertical01
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
@@ -179,6 +185,8 @@ ModelImporter:
     3300080: WallSimple02
     3300082: WallSimple03
     3300084: Wall12
+    3300086: SquarePillar01
+    3300088: WallVertical01
     4300000: Cube_002
     4300002: Cube
     4300004: Cube_003
@@ -222,6 +230,8 @@ ModelImporter:
     4300080: WallSimple02
     4300082: WallSimple03
     4300084: Wall12
+    4300086: SquarePillar01
+    4300088: WallVertical01
     7400000: Default Take
     9500000: //RootNode
   materials:
