@@ -117,6 +117,16 @@ public class StartMenuScript : MonoBehaviour {
 		if (OutOfMenu == true)
 		{
 			PuzzlePanel.GetComponent<PuzzleMenuPanelScript> ().CurrentLevel = SelectedLevel;
+			PuzzlePanel.SetActive(true);
+		}
+	}
+
+	public void ExitPuzzleMenu()
+	{
+		if (OutOfMenu == true)
+		{
+			PuzzlePanel.GetComponent<PuzzleMenuPanelScript> ().CurrentLevel = null;
+			PuzzlePanel.SetActive(false);
 		}
 	}
 

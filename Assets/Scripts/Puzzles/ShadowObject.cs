@@ -2,18 +2,20 @@
 using System.Collections;
 
 public class ShadowObject : MonoBehaviour {
-	public Vector3		TargetRotation;
-	public GameObject	ObjOffset;
-	public GameObject	ObjRotation;
-	public FormClickCatcher	ClickCatcher;
+	public Vector3				TargetRotationEuler;
+	public Quaternion			TargetRotation;
+	public GameObject			ObjOffset;
+	public GameObject			ObjRotation;
+	public FormClickCatcher		ClickCatcher;
 
-	private Vector3		NewRotation;
+	private Vector3				NewRotation;
 
 
 	void Awake () {
 		ObjOffset = transform.Find ("ObjOffset").gameObject;
 		ObjRotation = ObjOffset.transform.Find ("ObjRotation").gameObject;
-		TargetRotation = ObjRotation.transform.eulerAngles;
+		TargetRotationEuler = ObjRotation.transform.localEulerAngles;
+		TargetRotation = ObjRotation.transform.rotation;
 		ClickCatcher = GetComponentInChildren<FormClickCatcher> ();
 	}
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// Shadow level object. Main controller for 
+/// Shadow level object. Main controller for puzzles
 /// </summary>
 public class ShadowLevelObject : MonoBehaviour {
 	[Header("Puzzle Settings")]
@@ -17,12 +17,18 @@ public class ShadowLevelObject : MonoBehaviour {
 	public bool					HasOffsetDisplacement;
 	public bool					IsMultiObjects;
 
+	[Header("Puzzle Check Margin")]
+	public float				CheckMargin;
+
 	[Header("Puzzle Forms Containers")]
 	public GameObject			FormContainer;
 	public List<GameObject>		Forms = new List<GameObject>();
 
 	[Header("GamePlay State")]
 	public bool                 Playable = false;
+	[HideInInspector]
+	public int					FormCount;
+
     [SerializeField]
     private ShadowGamePlay      ShadowGameplay;
     private ShadowGameWinCheck  ShadowGameWinCheck;
@@ -31,6 +37,7 @@ public class ShadowLevelObject : MonoBehaviour {
     void Awake() {
 		PuzzleCamera = transform.Find ("PuzzleCamera").gameObject;
 		FormContainer = transform.Find ("FormContainer").gameObject;
+		FormCount = FormContainer.transform.childCount;
         ShadowGameplay = GetComponent<ShadowGamePlay>();
         ShadowGameWinCheck = GetComponent<ShadowGameWinCheck>();
     }
@@ -44,6 +51,7 @@ public class ShadowLevelObject : MonoBehaviour {
 	{
         ShadowGameplay.enabled = true;
         ShadowGameWinCheck.enabled = true;
+		ShadowGameWinCheck.AllFormOkay.AddListener (OnPuzzleSuccess);
     }
 
     public void ExitPlaying()
@@ -60,6 +68,11 @@ public class ShadowLevelObject : MonoBehaviour {
 			if (HasVerticalRotation)
 				child.gameObject.GetComponent<ShadowObject> ().RandomizeVerticalRotation();
 		}
+	}
+
+	public void OnPuzzleSuccess()
+	{
+		Debug.Log ("Puzzle Done !");
 	}
 
 	// Update is called once per frame

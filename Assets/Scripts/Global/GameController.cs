@@ -7,7 +7,6 @@ using System.Collections;
 /// </summary>
 public class GameController : MonoBehaviour {
 	public GameObject			MainPlayer;
-	public bool					CanEnterInput = true;
 
 	public bool					InMenu = true;
 	public bool					InFpsMode = true;
@@ -25,35 +24,53 @@ public class GameController : MonoBehaviour {
 	{
 		if (InMenu == false && InPuzzleMode == false)
 		{
-			CanEnterInput = false;
+			// local script mode set;
+			InFpsMode = false;
+			InPuzzleMode = true;
+
+			// Get Puzzle selected by player;
+			ShadowLevelSelected = MainPlayer.GetComponent<AdventurePlayer> ()
+				.CollidingPuzzle.GetComponent<ShadowLevelObject> ();
+
+			// Set Player control variables;
 			MainPlayer.GetComponent<AdventurePlayer> ().IsControllable = false;
 			MainPlayer.GetComponent<FpsCameraControl> ().enabled = false;
 			MainPlayer.GetComponent<FpsMovement> ().enabled = false;
-			InFpsMode = false;
-			InPuzzleMode = true;
-			ShadowLevelSelected = MainPlayer.GetComponent<AdventurePlayer> ()
-			.CollidingPuzzle.GetComponent<ShadowLevelObject> ();
+
+			// Start and set Puzzle UI
 			GameManager.instance.MenuGameObject.GetComponent<StartMenuScript>().InPuzzleMenu = true;
-			GameManager.instance.CameraController.ChangeCamPlayerToPuzzle (ShadowLevelSelected.PuzzleCamera);
+			GameManager.instance.MenuGameObject.GetComponent<StartMenuScript>().StartPuzzleMenu(ShadowLevelSelected);
+
+			// Send camera transition order;
+			GameManager.instance.CameraController.ChangeCamPlayerToPuzzle(ShadowLevelSelected.PuzzleCamera);
 		}
 	}
 
 	public void OnEndTransition()
 	{
-		Debug.Log ("endtransition");
-		if (InPuzzleMode == true) { // == transitionning from fps to puzzle;
-			CanEnterInput = true;
+		// When camera finishes transition, send event invoke();
+		// Debug.Log ("endtransition");
+		if (InPuzzleMode == true) // == transitionning from FPS to PUZZLE;
+		{
 			ShadowLevelSelected.Playable = true;
 			ShadowLevelSelected.StartPlaying ();
-		} else if (InPuzzleMode == false) { // == transitionning from puzzle to fps;
-			CanEnterInput = true;
+		}
+		else if (InPuzzleMode == false) // == transitionning from PUZZLE to FPS;
+		{
+			// local script mode set;
+			InFpsMode = true;
+
+			// Set ShadowLevel vars.
 			ShadowLevelSelected.Playable = false;
             ShadowLevelSelected.StartPlaying();
+			ShadowLevelSelected = null;
+
+			// Set Player control variables -> give back fps control.
             MainPlayer.GetComponent<AdventurePlayer> ().IsControllable = true;
 			MainPlayer.GetComponent<FpsCameraControl> ().enabled = true;
 			MainPlayer.GetComponent<FpsMovement> ().enabled = true;
-			InFpsMode = true;
-			GameManager.instance.MenuGameObject.GetComponent<StartMenuScript>().InPuzzleMenu = false;
+
+
 		}
 	}
 
@@ -62,8 +79,15 @@ public class GameController : MonoBehaviour {
 	{
 		if (InPuzzleMode == true)
 		{
-			CanEnterInput = false;
+			// local script mode set
 			InPuzzleMode = false;
+
+			// Set Puzzle UI;
+			GameManager.instance.MenuGameObject.GetComponent<StartMenuScript>().InPuzzleMenu = false;
+			GameManager.instance.MenuGameObject.GetComponent<StartMenuScript>().ExitPuzzleMenu();
+
+			// Send camera transition order ==> only after this will the controls be given back.
+			// See OnEndTransition() (event called);
 			GameManager.instance.CameraController.ChangeCamPuzzleToPlayer ();
 		}
 
