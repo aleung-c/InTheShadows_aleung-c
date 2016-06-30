@@ -9,11 +9,15 @@ public class ShadowGameWinCheck : MonoBehaviour {
 	public int				TargetCorrectNumber;
 	public int				CurNbOfCorrect;
 
-	private float			checkMargin;
+	private float			checkMarginRotation;
+	private float			checkMarginPosition;
 
 	private ShadowObject	childScript;
 	private GameObject		objRotation;
 	private Quaternion		targetRotation;
+
+	// protect multi event sending
+	private bool			PuzzleDoneOrderSent;
 
     void OnStart()
     {
@@ -22,31 +26,36 @@ public class ShadowGameWinCheck : MonoBehaviour {
 
 	// Use this for initialization
 	void OnEnable () {
+		PuzzleDoneOrderSent = false;
 		FormContainer = GetComponent<ShadowLevelObject> ().FormContainer;
 		TargetCorrectNumber = FormContainer.transform.childCount;
-		checkMargin = GetComponent<ShadowLevelObject> ().CheckMargin;
+		checkMarginRotation = GetComponent<ShadowLevelObject> ().CheckMarginRotation;
+		checkMarginPosition = GetComponent<ShadowLevelObject> ().CheckMarginPosition;
+		// reset child order sending bool;
+		foreach (Transform Child in FormContainer.transform) {
+			Child.GetComponent<ShadowObject> ().OrderSentFormDone = false;
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		CurNbOfCorrect = 0;
-		foreach (Transform Child in FormContainer.transform) {
+		foreach (Transform Child in FormContainer.transform)
+		{
 			childScript = Child.GetComponent<ShadowObject> ();
 			objRotation = childScript.ObjRotation;
 			targetRotation = childScript.TargetRotation;
-			if (Quaternion.Angle(targetRotation, objRotation.transform.rotation) < checkMargin)
+			if (Quaternion.Angle(targetRotation, objRotation.transform.GetChild(0).transform.rotation) < checkMarginRotation)
 			{
 				CurNbOfCorrect += 1;
-			}
-
-			if (Input.GetKey(KeyCode.F))
-			{
-				Debug.Log("cur margin = " + Quaternion.Angle(targetRotation, objRotation.transform.rotation));
+				if (!childScript.OrderSentFormDone)
+					childScript.FormDone.Invoke();
 			}
 		}
 
-		if (CurNbOfCorrect == TargetCorrectNumber) {
+		if (!PuzzleDoneOrderSent && CurNbOfCorrect == TargetCorrectNumber) {
 			AllFormOkay.Invoke();
+			PuzzleDoneOrderSent = true;
 		}
 	}
 }

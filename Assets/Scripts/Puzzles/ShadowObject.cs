@@ -1,21 +1,44 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class ShadowObject : MonoBehaviour {
-	public Vector3				TargetRotationEuler;
-	public Quaternion			TargetRotation;
-	public GameObject			ObjOffset;
-	public GameObject			ObjRotation;
-	public FormClickCatcher		ClickCatcher;
+	[Header("Object Settings")]
+	public bool					HasHorizontalRotation;
+	public bool					HasVerticalRotation;
+	public bool					HasOffsetDisplacement;
 
-	private Vector3				NewRotation;
+	[Header("Realtime Set Variables")]
+	//public Vector3				TargetRotationEuler;
+	public Quaternion			TargetRotation;
+	public Vector3				TargetPosition;
+
+	public GameObject			ObjRotation;
+	public GameObject			ObjOffset;
+
+	public FormClickCatcher		ClickCatcher;
+	[HideInInspector]
+	public UnityEvent			FormDone;
+	[HideInInspector]
+	public bool					OrderSentFormDone;
+
+	// private:
+	private Quaternion			NewRotation;
+	private Vector3				NewRotationEuler;
+	private Vector3				NewPosition;
 
 
 	void Awake () {
+		FormDone = new UnityEvent ();
 		ObjOffset = transform.Find ("ObjOffset").gameObject;
 		ObjRotation = ObjOffset.transform.Find ("ObjRotation").gameObject;
-		TargetRotationEuler = ObjRotation.transform.localEulerAngles;
-		TargetRotation = ObjRotation.transform.rotation;
+
+		// Set positions the player must reach
+		//TargetRotationEuler = ObjRotation.transform.localEulerAngles;
+		TargetRotation = ObjRotation.transform.GetChild(0).transform.rotation;
+		TargetPosition = ObjOffset.transform.position;
+
+		// Required for quick subscribing to FormClickCatcher events.
 		ClickCatcher = GetComponentInChildren<FormClickCatcher> ();
 	}
 
@@ -25,18 +48,34 @@ public class ShadowObject : MonoBehaviour {
 
 	public void RandomizeHorizontalRotation()
 	{
-        NewRotation.x = ObjRotation.transform.eulerAngles.x;
-        NewRotation.y = Random.Range (0.0F, 360.0F);
-		NewRotation.z = ObjRotation.transform.eulerAngles.z;
-		ObjRotation.transform.eulerAngles = NewRotation;
+		NewRotationEuler = ObjRotation.transform.eulerAngles;
+		NewRotationEuler.y += Random.Range (0.0F, 360.0F);
+		ObjRotation.transform.eulerAngles = NewRotationEuler;
+
+		/*
+		NewRotation = ObjRotation.transform.GetChild(0).transform.rotation;
+		NewRotation = Quaternion.AngleAxis(Random.Range (0.0F, 360.0F), Vector3.up);
+		ObjRotation.transform.GetChild(0).transform.rotation = NewRotation;*/
 	}
 
+	// TODO: A corriger
 	public void RandomizeVerticalRotation()
 	{
-        NewRotation.x = Random.Range(0.0F, 360.0F);
-        NewRotation.y = ObjRotation.transform.eulerAngles.y;
-		NewRotation.z = ObjRotation.transform.eulerAngles.z;
-		ObjRotation.transform.eulerAngles = NewRotation;
+		NewRotationEuler = ObjRotation.transform.eulerAngles;
+		NewRotationEuler.x += Random.Range (0.0F, 360.0F);
+		ObjRotation.transform.eulerAngles = NewRotationEuler;
+		/*
+		NewRotation = ObjRotation.transform.GetChild(0).transform.rotation;
+		NewRotation = Quaternion.AngleAxis(Random.Range (0.0F, 360.0F), ObjRotation.transform.forward);
+		ObjRotation.transform.GetChild(0).transform.rotation = NewRotation;*/
+	}
+
+	public void RandomizePosition()
+	{
+		NewPosition.x = Random.Range(-1.0F, 1.0F);
+		NewPosition.y = Random.Range(-1.0F, 1.0F);
+		NewPosition.z = ObjOffset.transform.localPosition.z;
+		ObjOffset.transform.localPosition = NewPosition;
 	}
 	
 	// Update is called once per frame

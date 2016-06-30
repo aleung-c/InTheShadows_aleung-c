@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,32 +10,33 @@ public class ShadowLevelObject : MonoBehaviour {
 	[Header("Puzzle Settings")]
 	public int					PuzzleNumber;
 	public string				PuzzleName;
-	public GameObject			PuzzleCamera;
-    public float                RotationSpeed = 3.0F;
+    public float                RotationSpeed = 1.0F;
+	public float    			DisplacementSpeed = 1.0F;
 
-	public bool					HasHorizontalRotation;
-	public bool					HasVerticalRotation;
-	public bool					HasOffsetDisplacement;
-	public bool					IsMultiObjects;
 
 	[Header("Puzzle Check Margin")]
-	public float				CheckMargin;
+	public float				CheckMarginRotation;
+	public float				CheckMarginPosition;
 
 	[Header("Puzzle Forms Containers")]
 	public GameObject			FormContainer;
 	public List<GameObject>		Forms = new List<GameObject>();
 
 	[Header("GamePlay State")]
+	public GameObject			PuzzleCamera;
 	public bool                 Playable = false;
 	[HideInInspector]
 	public int					FormCount;
-
-    [SerializeField]
+	
     private ShadowGamePlay      ShadowGameplay;
     private ShadowGameWinCheck  ShadowGameWinCheck;
+	private ShadowObject		CurrentShadowForm;
+
+	public UnityEvent			OnPuzzleDone;
 
     // Use this for pre-initialization
     void Awake() {
+		OnPuzzleDone = new UnityEvent ();
 		PuzzleCamera = transform.Find ("PuzzleCamera").gameObject;
 		FormContainer = transform.Find ("FormContainer").gameObject;
 		FormCount = FormContainer.transform.childCount;
@@ -61,18 +63,26 @@ public class ShadowLevelObject : MonoBehaviour {
 
     void InitializePuzzle()
 	{
-		// init puzzle random settings etc ...
-		foreach (Transform child in FormContainer.transform) {
-			if (HasHorizontalRotation)
-				child.gameObject.GetComponent<ShadowObject> ().RandomizeHorizontalRotation();
-			if (HasVerticalRotation)
-				child.gameObject.GetComponent<ShadowObject> ().RandomizeVerticalRotation();
+		// init puzzle random settings
+		foreach (Transform child in FormContainer.transform)
+		{
+			CurrentShadowForm = child.gameObject.GetComponent<ShadowObject> ();
+
+			if (CurrentShadowForm.HasHorizontalRotation)
+				CurrentShadowForm.RandomizeHorizontalRotation();
+
+			if (CurrentShadowForm.HasVerticalRotation)
+				CurrentShadowForm.RandomizeVerticalRotation();
+
+			if (CurrentShadowForm.HasOffsetDisplacement)
+				CurrentShadowForm.RandomizePosition();
 		}
 	}
 
 	public void OnPuzzleSuccess()
 	{
 		Debug.Log ("Puzzle Done !");
+		OnPuzzleDone.Invoke ();
 	}
 
 	// Update is called once per frame

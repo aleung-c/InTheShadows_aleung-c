@@ -32,6 +32,9 @@ public class GameController : MonoBehaviour {
 			ShadowLevelSelected = MainPlayer.GetComponent<AdventurePlayer> ()
 				.CollidingPuzzle.GetComponent<ShadowLevelObject> ();
 
+			// listen to completion.
+			ShadowLevelSelected.OnPuzzleDone.AddListener(OnPuzzleCompleted);
+
 			// Set Player control variables;
 			MainPlayer.GetComponent<AdventurePlayer> ().IsControllable = false;
 			MainPlayer.GetComponent<FpsCameraControl> ().enabled = false;
@@ -44,6 +47,15 @@ public class GameController : MonoBehaviour {
 			// Send camera transition order;
 			GameManager.instance.CameraController.ChangeCamPlayerToPuzzle(ShadowLevelSelected.PuzzleCamera);
 		}
+	}
+
+	public void OnPuzzleCompleted()
+	{
+		if (ShadowLevelSelected)
+		{
+			// Handle Save
+		}
+		PuzzleToFpsMode ();
 	}
 
 	public void OnEndTransition()

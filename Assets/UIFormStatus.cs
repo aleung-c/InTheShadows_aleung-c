@@ -3,18 +3,22 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class UIFormStatus : MonoBehaviour {
-	public GameObject	FormStatusTitle;
-	public Text			FormStatusTitleText;
+	public GameObject		FormStatusTitle;
+	public Text				FormStatusTitleText;
 
-	public GameObject	FormStatusOrientation;
-	public Text			FormStatusOrientationText;
+	public GameObject		FormStatusOrientation;
+	public Text				FormStatusOrientationText;
 
-	public GameObject	FormStatusPosition;
-	public Text			FormStatusPositionText;
+	public GameObject		FormStatusPosition;
+	public Text				FormStatusPositionText;
 
-	public GameObject	CorrespondingObject;
+	// Set by menu controller;
+	public GameObject		CorrespondingObject;
 
-    private bool        Active = false;
+    private bool        	Active = false;
+	private float			CurAngleDiff;
+	private float			PercentageCalculation;
+	private ShadowObject	FormScript;
 
 	// Use this for initialization
 	void OnEnable () {
@@ -28,20 +32,28 @@ public class UIFormStatus : MonoBehaviour {
 		FormStatusPositionText = FormStatusPosition.transform.Find ("CurVal").GetComponent<Text> ();
         StartCoroutine("UpdateUIStatusRoutine");
         Active = true;
-
     }
 
 	void OnDisable()
 	{
-        
-
+		StopAllCoroutines ();
     }
 
     void UpdateUI()
     {
-        float CurAngleDiff = Quaternion.Angle(CorrespondingObject.GetComponent<ShadowObject> ().TargetRotation,
-            CorrespondingObject.GetComponent<ShadowObject> ().ObjRotation.transform.rotation);
-        FormStatusOrientationText.text = (CurAngleDiff.ToString()) + " degres";
+		FormScript = CorrespondingObject.GetComponent<ShadowObject> ();
+
+		// set Name
+		// FormStatusTitleText = (FormScript.gameObject.name.ToString());
+
+		// Update Angle Value display
+		CurAngleDiff = Quaternion.Angle (FormScript.TargetRotation, FormScript.ObjRotation.transform.GetChild(0).transform.rotation);
+
+		// Make it look like a percentage
+		PercentageCalculation = 100.0F - CurAngleDiff;
+		if (PercentageCalculation < 0.0F)
+			PercentageCalculation = 0.0F;
+		FormStatusOrientationText.text = (PercentageCalculation.ToString("F2")) + " %";
     }
 
     IEnumerator UpdateUIStatusRoutine()

@@ -12,37 +12,44 @@ public class ShadowGamePlay : MonoBehaviour {
     public GameObject   FormContainer;
     [Header("In game private visible")]
     [SerializeField]
-    private bool        clicking;
+    private bool        		clicking;
 
     [SerializeField]
-    private bool        pressingVerticalMode;
+    private bool        		pressingVerticalMode;
     [SerializeField]
-    private bool        pressingDisplacementMode;
+    private bool        		pressingDisplacementMode;
 
-    private Vector3     newFormRotation;
-    private Vector3     newFormPosition;
+    private Quaternion     		newFormRotation;
+	private Vector3				NewFormRotationEuleur;
+
+    private Vector3     		newFormPosition;
 
     // keys
-    private KeyCode      verticalModeKey;
-    private KeyCode      verticalModeKeyAlt;
+    private KeyCode      		verticalModeKey;
+    private KeyCode      		verticalModeKeyAlt;
 
-    private KeyCode      displacementModeKey;
-    private KeyCode      displacementModeKeyAlt;
+    private KeyCode      		displacementModeKey;
+    private KeyCode      		displacementModeKeyAlt;
 
     // Settings
     private float                RotationSpeed;
-    private bool                 HasHorizontalRotation;
-    private bool                 HasVerticalRotation;
-    private bool                 HasOffsetDisplacement;
-    private bool                 IsMultiObjects;
+	private float                DisplacementSpeed;
+    
+	//private bool                 HasHorizontalRotation;
+    //private bool                 HasVerticalRotation;
+    //private bool                 HasOffsetDisplacement;
+    
+	//private bool                 IsMultiObjects;
 
     [SerializeField]
-    private GameObject CurrentForm;
+    private GameObject			CurrentForm;
+	private ShadowObject		CurrentFormScript;
+	private float				MouseMovementStockX;
+	private float 				MouseMovementStockY;
 
     void Awake()
     {
         FormContainer = transform.Find("FormContainer").gameObject;
-
         verticalModeKey = GameManager.instance.KeyManager.VerticalPuzzleButton;
         verticalModeKeyAlt = GameManager.instance.KeyManager.VerticalPuzzleButtonAlt;
 
@@ -55,10 +62,7 @@ public class ShadowGamePlay : MonoBehaviour {
     {
         // Get PuzzleSettings
         RotationSpeed = GetComponent<ShadowLevelObject>().RotationSpeed;
-        HasHorizontalRotation = GetComponent<ShadowLevelObject>().HasHorizontalRotation;
-        HasVerticalRotation = GetComponent<ShadowLevelObject>().HasVerticalRotation;
-        HasOffsetDisplacement = GetComponent<ShadowLevelObject>().HasOffsetDisplacement;
-        IsMultiObjects = GetComponent<ShadowLevelObject>().IsMultiObjects;
+		DisplacementSpeed = GetComponent<ShadowLevelObject> ().DisplacementSpeed;
         foreach (Transform Child in FormContainer.transform) {
             Child.GetComponent<ShadowObject>().ClickCatcher.OnClickDown.AddListener(OnFormMouseDown);
             Child.GetComponent<ShadowObject>().ClickCatcher.OnClickUp.AddListener(OnFormMouseUp);
@@ -74,45 +78,52 @@ public class ShadowGamePlay : MonoBehaviour {
         }
     }
 
+	/// <summary>
+	///  Main function for form movement.
+	/// </summary>
     void MoveForm()
     {
         if (CurrentForm)
         {
-            //newFormRotation = CurrentForm.GetComponent<ShadowObject>().ObjRotation.transform.rotation;
-            newFormPosition = CurrentForm.GetComponent<ShadowObject>().ObjOffset.transform.localPosition;
-
+			CurrentFormScript = CurrentForm.GetComponent<ShadowObject>();
+			newFormPosition = CurrentFormScript.ObjOffset.transform.localPosition;
             // Priority order : displacement > VerticalMode > nothing pressed (horizontal)
+
             // Displacement //
-            if (HasOffsetDisplacement && pressingDisplacementMode)
+			if (CurrentFormScript.HasOffsetDisplacement && pressingDisplacementMode)
             {
-                newFormPosition.y += Input.GetAxis("MouseVertical") * Time.deltaTime;
-                Debug.Log(newFormPosition.y);
-                if (newFormPosition.y < -0.9F)
-                    newFormPosition.y = -0.9F;
-                else if (newFormPosition.y > 0.9F)
-                    newFormPosition.y = 0.9F;
-                newFormPosition.x += Input.GetAxis("MouseHorizontal") * Time.deltaTime;
-                if (newFormPosition.x < -1.5F)
-                    newFormPosition.x = -1.5F;
-                else if (newFormPosition.x > 1.5F)
-                    newFormPosition.x = 1.5F;
-            }
+				newFormPosition.y += Mathf.Clamp(Input.GetAxis("MouseVertical")
+	                             	* DisplacementSpeed * Time.deltaTime, -0.9F, 0.9F);
+				newFormPosition.x += Mathf.Clamp(Input.GetAxis("MouseHorizontal")
+                                 	* DisplacementSpeed * Time.deltaTime, -1.5F, 1.5F);
+				CurrentFormScript.ObjOffset.transform.localPosition = newFormPosition;
+
+			}
             // Vertical //
-            else if (HasVerticalRotation && pressingVerticalMode)
+			else if (CurrentFormScript.HasVerticalRotation && pressingVerticalMode)
             {
-                newFormRotation.x = Input.GetAxis("MouseVertical");
-                newFormRotation.y = 0.0F;
-                newFormRotation.z = 0.0F;
+				// Using relative rotationning.
+				CurrentFormScript.ObjRotation.transform.rotation =
+					CurrentFormScript.ObjRotation.transform.rotation 
+					* Quaternion.Euler(Input.GetAxis("MouseVertical"), 0, 0);
             }
             // Horizontal //
-            else if (HasHorizontalRotation)
+			else if (CurrentFormScript.HasHorizontalRotation && !pressingVerticalMode)
             {
-                newFormRotation.y = Input.GetAxis("MouseHorizontal");
-                newFormRotation.x = 0.0F;
-                newFormRotation.z = 0.0F;
+				// Using world related up vector. (that's the reason for the euler angle conversion).
+				NewFormRotationEuleur = CurrentFormScript.ObjRotation.transform.eulerAngles;
+				NewFormRotationEuleur.y -= Input.GetAxis("MouseHorizontal");
+				newFormRotation = Quaternion.Euler(NewFormRotationEuleur);
+				// Rotation horizontal
+				CurrentFormScript.ObjRotation.transform.rotation =
+					Quaternion.RotateTowards(CurrentFormScript.ObjRotation.transform.rotation,
+					                         newFormRotation, 45.0F);
+
+				// Using relative rotationning. Unused, causes confusion when moving both axes.
+					/*CurrentFormScript.ObjRotation.transform.rotation =
+					CurrentFormScript.ObjRotation.transform.rotation 
+						* Quaternion.Euler(0, Input.GetAxis("MouseHorizontal"), 0);*/
             }
-            CurrentForm.GetComponent<ShadowObject>().ObjOffset.transform.localPosition = newFormPosition;
-            CurrentForm.GetComponent<ShadowObject>().ObjRotation.transform.Rotate(newFormRotation, RotationSpeed * Time.deltaTime * 10.0F, Space.World);
         }
     }
 
@@ -133,6 +144,8 @@ public class ShadowGamePlay : MonoBehaviour {
         // Interaction Cheking;
         if (clicking == true)
         {
+			MouseMovementStockX += Input.GetAxis("MouseHorizontal") * RotationSpeed;
+			MouseMovementStockY += Input.GetAxis("MouseVertical") * RotationSpeed;
             MoveForm();
         }
 	}
@@ -140,14 +153,19 @@ public class ShadowGamePlay : MonoBehaviour {
 	// will be applied on each clicked form
 	public void OnFormMouseDown(GameObject Form)
 	{
-		Debug.Log ("Clicked on " + Form.name);
+		//Debug.Log ("Clicked on " + Form.name);
+		MouseMovementStockX = 0.0f;
+		MouseMovementStockY = 0.0f;
         clicking = true;
         CurrentForm = Form;
     }
 
 	public void OnFormMouseUp(GameObject Form)
 	{
-		Debug.Log ("Released on " + Form.name);
+		//Debug.Log ("Released on " + Form.name);
+		
+		MouseMovementStockX = 0.0f;
+		MouseMovementStockY = 0.0f;
         clicking = false;
         CurrentForm = null;
     }

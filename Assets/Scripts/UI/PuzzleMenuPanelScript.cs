@@ -28,13 +28,32 @@ public class PuzzleMenuPanelScript : MonoBehaviour {
 			{
 				CurrentSpawnedObj = (GameObject)Instantiate (FormStatusPrefab, Vector3.zero, Quaternion.identity);
 				CurrentSpawnedObj.GetComponent<UIFormStatus> ().CorrespondingObject = CurrentLevel.FormContainer.transform.GetChild(i).gameObject;
+				Debug.Log(CurrentLevel.FormContainer.transform.GetChild(i).gameObject.name.ToString());
 				CurrentSpawnedObj.transform.SetParent(FormStatusUIContainer.transform);
                 CurrentSpawnedObj.transform.localScale = defaultLocalScale;
 
             }
 		}
 	}
-	
+
+	public void OnClickBack()
+	{
+		if (GameManager.instance.GameController.InPuzzleMode == true)
+		{
+			OnLeavePuzzle ();
+			GameManager.instance.GameController.PuzzleToFpsMode ();
+		}
+	}
+
+	void OnLeavePuzzle()
+	{
+		foreach(Transform child in FormStatusUIContainer.transform)
+		{
+			child.GetComponent<UIFormStatus> ().enabled = false;
+			Destroy(child.gameObject);
+		}
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{
