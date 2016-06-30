@@ -9,7 +9,6 @@ public class ShadowObject : MonoBehaviour {
 	public bool					HasOffsetDisplacement;
 
 	[Header("Realtime Set Variables")]
-	//public Vector3				TargetRotationEuler;
 	public Quaternion			TargetRotation;
 	public Vector3				TargetPosition;
 
@@ -34,7 +33,6 @@ public class ShadowObject : MonoBehaviour {
 		ObjRotation = ObjOffset.transform.Find ("ObjRotation").gameObject;
 
 		// Set positions the player must reach
-		//TargetRotationEuler = ObjRotation.transform.localEulerAngles;
 		TargetRotation = ObjRotation.transform.GetChild(0).transform.rotation;
 		TargetPosition = ObjOffset.transform.position;
 
@@ -55,10 +53,10 @@ public class ShadowObject : MonoBehaviour {
 		/*
 		NewRotation = ObjRotation.transform.GetChild(0).transform.rotation;
 		NewRotation = Quaternion.AngleAxis(Random.Range (0.0F, 360.0F), Vector3.up);
-		ObjRotation.transform.GetChild(0).transform.rotation = NewRotation;*/
+		ObjRotation.transform.GetChild(0).transform.rotation = NewRotation;
+		*/
 	}
 
-	// TODO: A corriger
 	public void RandomizeVerticalRotation()
 	{
 		NewRotationEuler = ObjRotation.transform.eulerAngles;
