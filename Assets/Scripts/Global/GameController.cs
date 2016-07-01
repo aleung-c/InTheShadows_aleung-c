@@ -16,7 +16,8 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		MainPlayer = GameManager.instance.PlayerGameObject;
-		GameManager.instance.CameraController.OnEndTransition.AddListener (OnEndTransition);
+		GameManager.instance.CameraController.OnEndMoveTransition.AddListener (OnEndTransition);
+		GameManager.instance.CameraController.BlackScreenTransition ();
 	}
 
 	// From fps to puzzle game mode

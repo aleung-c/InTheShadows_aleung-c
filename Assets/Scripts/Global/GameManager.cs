@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour {
 	[Header("References")]
     public GameSettings             GameSettings;
 	public KeyControlManager		KeyManager;
-	public SaveManager				SaveManager;
 	
 	public GameObject				MenuGameObject;
 	public StartMenuScript			StartMenuScript;
@@ -33,8 +32,6 @@ public class GameManager : MonoBehaviour {
 	//Initializes the game for each level.
 	void InitGame()
 	{
-		SaveManager = GetComponent<SaveManager> ();
-
 		MenuGameObject = GameObject.Find ("Menu").gameObject;
 		StartMenuScript = MenuGameObject.GetComponent<StartMenuScript> ();
 		GameController = GameObject.Find ("GameController").GetComponent<GameController> ();

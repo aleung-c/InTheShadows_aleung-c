@@ -22,6 +22,12 @@ public class StartMenuScript : MonoBehaviour {
 	[SerializeField]
 	private Animator    PuzzlePanelAnimator;
 
+	[Header("Load Game Menu references")]
+	[SerializeField]
+	private GameObject  LoadGamePanel;
+	[SerializeField]
+	private Animator    LoadGamePanelAnimator;
+
     public bool         CanInteract = true;
     public bool         OutOfMenu = false;
 	public bool			InPuzzleMenu = false;
@@ -30,15 +36,21 @@ public class StartMenuScript : MonoBehaviour {
 	void Start () {
         MainMenuPanel = transform.Find("MainPanelContainer").gameObject;
         MainPanelAnimator = MainMenuPanel.GetComponent<Animator>();
+
         OptionPanel = transform.Find("OptionMenuPanelContainer").gameObject;
         OptionPanelAnimator = OptionPanel.GetComponent<Animator>();
+
 		PuzzlePanel = transform.Find("PuzzleMenuPanel").gameObject;
 		PuzzlePanelAnimator = PuzzlePanel.GetComponent<Animator>();
+
+		LoadGamePanel = transform.Find ("LoadGamePanel").gameObject;
+		LoadGamePanelAnimator = LoadGamePanel.GetComponent<Animator> ();
 
 		// Set all as it should be
 		MainMenuPanel.SetActive (true);
 		OptionPanel.SetActive (false);
 		PuzzlePanel.SetActive (false);
+		LoadGamePanel.SetActive (false);
     }
 	
 	// Update is called once per frame
