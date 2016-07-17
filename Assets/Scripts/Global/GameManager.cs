@@ -6,12 +6,15 @@ public class GameManager : MonoBehaviour {
 	public static GameManager       instance = null;
 
 	[Header("References")]
+    public GameObject               PlayerGameObject;
+
     public GameSettings             GameSettings;
 	public KeyControlManager		KeyManager;
 	
 	public GameObject				MenuGameObject;
 	public StartMenuScript			StartMenuScript;
-    public GameObject               PlayerGameObject;
+
+    [Header("Controller References")]
 	// GameControllers
 	public GameController			GameController; // controls game states and mode switchings;
 	public CameraController			CameraController;
@@ -32,6 +35,7 @@ public class GameManager : MonoBehaviour {
 	//Initializes the game for each level.
 	void InitGame()
 	{
+        // Set References variables
 		MenuGameObject = GameObject.Find ("Menu").gameObject;
 		StartMenuScript = MenuGameObject.GetComponent<StartMenuScript> ();
 		GameController = GameObject.Find ("GameController").GetComponent<GameController> ();
@@ -39,10 +43,29 @@ public class GameManager : MonoBehaviour {
         GameSettings = GetComponent<GameSettings> ();
         KeyManager = GetComponent<KeyControlManager> ();
         PlayerGameObject = GameObject.Find("Player");
-    }	
+        // SaveManager also available as static Class SaveManager.
+        SaveManager.Load();
+        SaveObject.Current = SaveManager.CurrentSave;
+        // GameController will take care of level loading.
+    }
 	
-	//Update is called every frame.
-	void Update()
+    public void LoadSaveFile()
+    {
+
+    }
+
+    public void SaveGameFile()
+    {
+
+    }
+
+    public void ResetSaveFile()
+    {
+
+    }
+
+    //Update is called every frame.
+    void Update()
 	{
 		
 	}

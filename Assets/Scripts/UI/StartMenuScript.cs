@@ -92,6 +92,8 @@ public class StartMenuScript : MonoBehaviour {
 			GameManager.instance.GameController.InMenu = false;
             GameManager.instance.KeyManager.MouseSensitivityX *= 2.0F;
             GameManager.instance.KeyManager.MouseSensitivityY *= 2.0F;
+            // Call to Game Controller
+            GameManager.instance.GameController.OnTestModeOrdered();
         }
     }
 

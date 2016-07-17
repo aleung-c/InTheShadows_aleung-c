@@ -53,6 +53,11 @@ ModelImporter:
     100090: WallVertical01
     100092: Wave
     100094: RoofSupport1
+    100096: LampTop
+    100098: PointyRoof
+    100100: PointyRoofSupport
+    100102: WallVerticalWindowed01
+    100104: LongSupport
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -101,6 +106,11 @@ ModelImporter:
     400090: WallVertical01
     400092: Wave
     400094: RoofSupport1
+    400096: LampTop
+    400098: PointyRoof
+    400100: PointyRoofSupport
+    400102: WallVerticalWindowed01
+    400104: LongSupport
     2300000: Cube
     2300002: Cube_001
     2300004: Cube_002
@@ -148,6 +158,11 @@ ModelImporter:
     2300088: WallVertical01
     2300090: Wave
     2300092: RoofSupport1
+    2300094: LampTop
+    2300096: PointyRoof
+    2300098: PointyRoofSupport
+    2300100: WallVerticalWindowed01
+    2300102: LongSupport
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
@@ -195,6 +210,11 @@ ModelImporter:
     3300088: WallVertical01
     3300090: Wave
     3300092: RoofSupport1
+    3300094: LampTop
+    3300096: PointyRoof
+    3300098: PointyRoofSupport
+    3300100: WallVerticalWindowed01
+    3300102: LongSupport
     4300000: Cube_002
     4300002: Cube
     4300004: Cube_003
@@ -242,6 +262,11 @@ ModelImporter:
     4300088: WallVertical01
     4300090: Wave
     4300092: RoofSupport1
+    4300094: LampTop
+    4300096: PointyRoof
+    4300098: PointyRoofSupport
+    4300100: WallVerticalWindowed01
+    4300102: LongSupport
     7400000: Default Take
     9500000: //RootNode
   materials:

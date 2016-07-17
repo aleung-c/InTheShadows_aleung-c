@@ -14,6 +14,11 @@ public class OptionPanelScript : MonoBehaviour {
             GS.WithSound = false;
     }
 
+    public void OnClickResetSave()
+    {
+        GameManager.instance.GameController.OnResetSaveOrdered();
+    }
+
     public void CanInteractWithMenus() {
         transform.parent.GetComponent<StartMenuScript>().CanInteract = true;
     }

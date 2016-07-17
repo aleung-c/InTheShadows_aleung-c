@@ -16,9 +16,25 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		MainPlayer = GameManager.instance.PlayerGameObject;
-		GameManager.instance.CameraController.OnEndMoveTransition.AddListener (OnEndTransition);
-		GameManager.instance.CameraController.BlackScreenTransition ();
-	}
+        GameManager.instance.CameraController.OnEndMoveTransition.AddListener(OnEndTransition);
+        OnGameStart();
+    }
+
+    public void OnGameStart()
+    {
+        Debug.Log("GameController : GameStarting !");
+        GameManager.instance.CameraController.BlackScreenTransition();
+    }
+
+    public void OnResetSaveOrdered()
+    {
+        Debug.Log("GameController : Reset save ordered !");
+    }
+
+    public void OnTestModeOrdered ()
+    {
+        Debug.Log("GameController : Switching to Test mode !");
+    }
 
 	// From fps to puzzle game mode
 	public void	FpsToPuzzleMode()

@@ -25,6 +25,7 @@ public class ShadowLevelObject : MonoBehaviour {
 	[Header("GamePlay State")]
 	public GameObject			PuzzleCamera;
 	public bool                 Playable = false;
+    public bool                 PuzzleDone = false;
 	[HideInInspector]
 	public int					FormCount;
 	
@@ -82,8 +83,16 @@ public class ShadowLevelObject : MonoBehaviour {
 	public void OnPuzzleSuccess()
 	{
 		Debug.Log ("Puzzle Done !");
-		OnPuzzleDone.Invoke ();
+        PuzzleDone = true;
+        OnPuzzleDone.Invoke ();
 	}
+
+    // will be called for save loading;
+    public void UnlockPuzzle()
+    {
+        PuzzleDone = true;
+        OnPuzzleDone.Invoke();
+    }
 
 	// Update is called once per frame
 	void Update () {
