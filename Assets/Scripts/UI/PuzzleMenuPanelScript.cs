@@ -31,7 +31,6 @@ public class PuzzleMenuPanelScript : MonoBehaviour {
 				Debug.Log(CurrentLevel.FormContainer.transform.GetChild(i).gameObject.name.ToString());
 				CurrentSpawnedObj.transform.SetParent(FormStatusUIContainer.transform);
                 CurrentSpawnedObj.transform.localScale = defaultLocalScale;
-
             }
 		}
 	}
@@ -42,6 +41,7 @@ public class PuzzleMenuPanelScript : MonoBehaviour {
 		{
 			OnLeavePuzzle ();
 			GameManager.instance.GameController.PuzzleToFpsMode ();
+			GameManager.instance.StartMenuScript.ExitPuzzlePlayAnimation(false);
 		}
 	}
 
@@ -52,6 +52,11 @@ public class PuzzleMenuPanelScript : MonoBehaviour {
 			child.GetComponent<UIFormStatus> ().enabled = false;
 			Destroy(child.gameObject);
 		}
+	}
+
+	public void DeactivatePuzzlePanel()
+	{
+		this.gameObject.SetActive(false);
 	}
 
 	// Update is called once per frame

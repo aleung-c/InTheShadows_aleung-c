@@ -22,7 +22,8 @@ public class FpsMovement : MonoBehaviour {
 	private CharacterController	PlayerCC;
 	private float				WalkingSpeed;
 	private float				RunningSpeed;
-
+	[HideInInspector]
+	public bool					InTestMode = false;
 	Vector3						MovementDirection;
 
 	// Use this for initialization
@@ -62,7 +63,10 @@ public class FpsMovement : MonoBehaviour {
 			{
 				MovementDirection = Quaternion.AngleAxis(45, Vector3.up) * MovementDirection;
 			}
-			PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
+			if (InTestMode)
+				PlayerCC.Move (MovementDirection * WalkingSpeed * Time.deltaTime * 10.0F);
+			else
+				PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
 		}
 		// first press backward
 		else if (Input.GetKey (MoveBackward) || Input.GetKey (MoveBackwardAlt)) {
@@ -75,7 +79,10 @@ public class FpsMovement : MonoBehaviour {
 			{
 				MovementDirection = Quaternion.AngleAxis(-45, Vector3.up) * MovementDirection;
 			}
-			PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
+			if (InTestMode)
+				PlayerCC.Move (MovementDirection * WalkingSpeed * Time.deltaTime * 10.0F);
+			else
+				PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
 		}
 		// first press Strafe left
 		else if (Input.GetKey (StrafeLeft) || Input.GetKey (StrafeLeftAlt)) {
@@ -88,7 +95,10 @@ public class FpsMovement : MonoBehaviour {
 			{
 				MovementDirection = Quaternion.AngleAxis(45, Vector3.up) * MovementDirection;
 			}
-			PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
+			if (InTestMode)
+				PlayerCC.Move (MovementDirection * WalkingSpeed * Time.deltaTime * 10.0F);
+			else
+				PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
 		}
 		// first press Strafe Right
 		else if (Input.GetKey (StrafeRight) || Input.GetKey (StrafeRightAlt)) {
@@ -101,12 +111,15 @@ public class FpsMovement : MonoBehaviour {
 			{
 				MovementDirection = Quaternion.AngleAxis(45, Vector3.up) * MovementDirection;
 			}
-
-			PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
+			if (InTestMode)
+				PlayerCC.Move (MovementDirection * WalkingSpeed * Time.deltaTime * 10.0F);
+			else
+				PlayerCC.SimpleMove (MovementDirection * WalkingSpeed * Time.deltaTime * 100.0F);
 		}
 
+		if (InTestMode) {
 
-
+		}
 	}
 
 	// Update is called once per frame

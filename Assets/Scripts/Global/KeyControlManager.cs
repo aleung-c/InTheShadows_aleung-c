@@ -18,6 +18,12 @@ public class KeyControlManager : MonoBehaviour {
 	public KeyCode		StrafeRight;
 	public KeyCode		StrafeRightAlt;
 
+	public KeyCode		AltitudeUp;
+	public KeyCode		AltitudeUpAlt;
+	
+	public KeyCode		AltitudeDown;
+	public KeyCode		AltitudeDownAlt;
+
     public KeyCode      EscapeKey;
     public KeyCode      EscapeKeyAlt;
 

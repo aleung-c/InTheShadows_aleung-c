@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 
 public class ShadowGameWinCheck : MonoBehaviour {
+	[HideInInspector]
     public UnityEvent       AllFormOkay;
     public GameObject       FormContainer;
 

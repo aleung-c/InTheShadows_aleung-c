@@ -13,7 +13,6 @@ public class ShadowLevelObject : MonoBehaviour {
     public float                RotationSpeed = 1.0F;
 	public float    			DisplacementSpeed = 1.0F;
 
-
 	[Header("Puzzle Check Margin")]
 	public float				CheckMarginRotation;
 	public float				CheckMarginPosition;
@@ -33,7 +32,13 @@ public class ShadowLevelObject : MonoBehaviour {
     private ShadowGameWinCheck  ShadowGameWinCheck;
 	private ShadowObject		CurrentShadowForm;
 
+	[HideInInspector]
 	public UnityEvent			OnPuzzleDone;
+	[HideInInspector]
+	public UnityEvent			OnPuzzleUnlock;
+	[HideInInspector]
+	public UnityEvent			OnPuzzlelock;
+
 
     // Use this for pre-initialization
     void Awake() {
@@ -80,10 +85,16 @@ public class ShadowLevelObject : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Raises the puzzle success event.
+	/// </summary>
 	public void OnPuzzleSuccess()
 	{
 		Debug.Log ("Puzzle Done !");
         PuzzleDone = true;
+		ShadowGameplay.Clicking = false;
+		ShadowGameplay.enabled = false;
+		ShadowGameWinCheck.enabled = false;
         OnPuzzleDone.Invoke ();
 	}
 
@@ -91,8 +102,14 @@ public class ShadowLevelObject : MonoBehaviour {
     public void UnlockPuzzle()
     {
         PuzzleDone = true;
-        OnPuzzleDone.Invoke();
+		OnPuzzleUnlock.Invoke();
     }
+
+	public void LockPuzzle()
+	{
+		PuzzleDone = false;
+		OnPuzzlelock.Invoke ();
+	}
 
 	// Update is called once per frame
 	void Update () {

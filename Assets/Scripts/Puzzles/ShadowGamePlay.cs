@@ -12,7 +12,7 @@ public class ShadowGamePlay : MonoBehaviour {
     public GameObject   FormContainer;
     [Header("In game private visible")]
     [SerializeField]
-    private bool        		clicking;
+    public bool        			Clicking;
 
     [SerializeField]
     private bool        		pressingVerticalMode;
@@ -63,7 +63,8 @@ public class ShadowGamePlay : MonoBehaviour {
         // Get PuzzleSettings
         RotationSpeed = GetComponent<ShadowLevelObject>().RotationSpeed;
 		DisplacementSpeed = GetComponent<ShadowLevelObject> ().DisplacementSpeed;
-        foreach (Transform Child in FormContainer.transform) {
+        foreach (Transform Child in FormContainer.transform)
+		{
             Child.GetComponent<ShadowObject>().ClickCatcher.OnClickDown.AddListener(OnFormMouseDown);
             Child.GetComponent<ShadowObject>().ClickCatcher.OnClickUp.AddListener(OnFormMouseUp);
         }
@@ -72,7 +73,8 @@ public class ShadowGamePlay : MonoBehaviour {
     // Avoiding memory leaks
     void OnDisable()
     {
-        foreach (Transform Child in FormContainer.transform) {
+        foreach (Transform Child in FormContainer.transform)
+		{
             Child.GetComponent<ShadowObject>().ClickCatcher.OnClickDown.RemoveListener(OnFormMouseDown);
             Child.GetComponent<ShadowObject>().ClickCatcher.OnClickUp.RemoveListener(OnFormMouseUp);
         }
@@ -142,7 +144,7 @@ public class ShadowGamePlay : MonoBehaviour {
             pressingDisplacementMode = false;
         
         // Interaction Cheking;
-        if (clicking == true)
+		if (Clicking == true)
         {
 			MouseMovementStockX += Input.GetAxis("MouseHorizontal") * RotationSpeed;
 			MouseMovementStockY += Input.GetAxis("MouseVertical") * RotationSpeed;
@@ -156,17 +158,16 @@ public class ShadowGamePlay : MonoBehaviour {
 		//Debug.Log ("Clicked on " + Form.name);
 		MouseMovementStockX = 0.0f;
 		MouseMovementStockY = 0.0f;
-        clicking = true;
+		Clicking = true;
         CurrentForm = Form;
     }
 
 	public void OnFormMouseUp(GameObject Form)
 	{
 		//Debug.Log ("Released on " + Form.name);
-		
 		MouseMovementStockX = 0.0f;
 		MouseMovementStockY = 0.0f;
-        clicking = false;
+		Clicking = false;
         CurrentForm = null;
     }
 }

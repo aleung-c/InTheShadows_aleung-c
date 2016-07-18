@@ -14,6 +14,12 @@ public class GameManager : MonoBehaviour {
 	public GameObject				MenuGameObject;
 	public StartMenuScript			StartMenuScript;
 
+	public bool						TestMode = false;
+
+	[Header("References to level stuffs")]
+	public ShadowLevelObject[]		SceneShadowLevels;
+	public ShadowLevelDoor[]		SceneDoors;
+
     [Header("Controller References")]
 	// GameControllers
 	public GameController			GameController; // controls game states and mode switchings;
@@ -35,14 +41,19 @@ public class GameManager : MonoBehaviour {
 	//Initializes the game for each level.
 	void InitGame()
 	{
-        // Set References variables
+        // Set managers references variables
 		MenuGameObject = GameObject.Find ("Menu").gameObject;
 		StartMenuScript = MenuGameObject.GetComponent<StartMenuScript> ();
 		GameController = GameObject.Find ("GameController").GetComponent<GameController> ();
 		CameraController = GameObject.Find ("CameraController").GetComponent<CameraController> ();
         GameSettings = GetComponent<GameSettings> ();
         KeyManager = GetComponent<KeyControlManager> ();
-        PlayerGameObject = GameObject.Find("Player");
+       
+		// Set game needed elements references
+		PlayerGameObject = GameObject.Find("Player");
+		SceneShadowLevels = GameObject.FindObjectsOfType<ShadowLevelObject> ();
+		SceneDoors = GameObject.FindObjectsOfType<ShadowLevelDoor> ();
+
         // SaveManager also available as static Class SaveManager.
         SaveManager.Load();
         SaveObject.Current = SaveManager.CurrentSave;

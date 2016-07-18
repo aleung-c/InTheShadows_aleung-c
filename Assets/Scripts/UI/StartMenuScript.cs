@@ -30,7 +30,11 @@ public class StartMenuScript : MonoBehaviour {
 
     public bool         CanInteract = true;
     public bool         OutOfMenu = false;
+	public bool			InOtherMenu = false;
 	public bool			InPuzzleMenu = false;
+
+	[HideInInspector]
+	public bool			PuzzleResolved = false;
 
 	// Use this for initialization
 	void Start () {
@@ -55,17 +59,28 @@ public class StartMenuScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (OutOfMenu == true && InPuzzleMenu == false && Input.GetKeyDown(KeyCode.Escape))
-        {
-            OutOfMenu = false;
+		if (Input.GetKeyDown (KeyCode.Escape) && OutOfMenu == true && InPuzzleMenu == false && InOtherMenu == false) // not in any menu
+		{
+			OutOfMenu = false;
 			GameManager.instance.GameController.InMenu = true;
-            MainMenuPanel.SetActive(true);
-            MainPanelAnimator.SetTrigger("AppearAll");
-            GameManager.instance.KeyManager.MouseSensitivityX /= 2.0F;
-            GameManager.instance.KeyManager.MouseSensitivityY /= 2.0F;
-        }
+			MainMenuPanel.SetActive (true);
+			MainPanelAnimator.SetTrigger ("AppearAll");
+			GameManager.instance.KeyManager.MouseSensitivityX /= 2.0F;
+			GameManager.instance.KeyManager.MouseSensitivityY /= 2.0F;
+		}
+		else if (Input.GetKeyDown (KeyCode.Escape) && OutOfMenu == false && InPuzzleMenu == false && InOtherMenu == false) // in main menu
+		{
+			if (GameManager.instance.TestMode == false)
+			{
+				OnClickNormalMode();
+			}
+			else
+			{
+				OnClickTestMode();
+			}
+		}
 
-		if (InPuzzleMenu == true && Input.GetKeyDown (KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.Escape) && InPuzzleMenu == true && InOtherMenu == false)
 		{
 			GameManager.instance.GameController.PuzzleToFpsMode();
 		}
@@ -81,6 +96,8 @@ public class StartMenuScript : MonoBehaviour {
 			GameManager.instance.GameController.InMenu = false;
             GameManager.instance.KeyManager.MouseSensitivityX *= 2.0F;
             GameManager.instance.KeyManager.MouseSensitivityY *= 2.0F;
+			// Call to Game Controller
+			GameManager.instance.GameController.OnNormalModeOrdered();
         }
     }
 
@@ -97,26 +114,32 @@ public class StartMenuScript : MonoBehaviour {
         }
     }
 
-    public void OnClickOptions() {
-        if (CanInteract) {
-            CanInteract = false;
-            MainPanelAnimator.SetTrigger("HideAll");
-            //OptionPanelAnimator.SetTrigger("AppearAll");
-            OptionPanel.SetActive(true);
-        }
-    }
-
     public void OnClickQuit() {
+		if (OutOfMenu == false && InPuzzleMenu == false) // in main menu
+		{
 #if UNITY_EDITOR
-        Debug.Log("Quit pressed");
+			Debug.Log ("Quit pressed");
 #else
          Application.Quit();
 #endif
+		}
     }
 
     // METHODS FOR THE OPTION MENU SCREEN --------------------------------//
+
+	public void OnClickOptions() {
+		if (CanInteract) {
+			CanInteract = false;
+			InOtherMenu = true;
+			MainPanelAnimator.SetTrigger("HideAll");
+			//OptionPanelAnimator.SetTrigger("AppearAll");
+			OptionPanel.SetActive(true);
+		}
+	}
+
     public void OnClickOptionsBack() {
         if (CanInteract) {
+			InOtherMenu = false;
             CanInteract = false;
             OptionPanelAnimator.SetTrigger("DisappearAll");
             MainPanelAnimator.SetTrigger("AppearAll");
@@ -135,13 +158,19 @@ public class StartMenuScript : MonoBehaviour {
 		}
 	}
 
+	public void ExitPuzzlePlayAnimation(bool Win)
+	{
+		if (Win == true)
+			PuzzlePanel.GetComponent<Animator> ().SetTrigger("DisappearWin");
+		else
+			PuzzlePanel.GetComponent<Animator> ().SetTrigger("Disappear");
+	}
+
 	public void ExitPuzzleMenu()
 	{
 		if (OutOfMenu == true)
 		{
 			PuzzlePanel.GetComponent<PuzzleMenuPanelScript> ().CurrentLevel = null;
-			PuzzlePanel.SetActive(false);
 		}
 	}
-
 }

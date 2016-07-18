@@ -15,25 +15,43 @@ public class GameController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		// Before anything visible begins.
 		MainPlayer = GameManager.instance.PlayerGameObject;
         GameManager.instance.CameraController.OnEndMoveTransition.AddListener(OnEndTransition);
+		// GameStart, no mode selected.
         OnGameStart();
     }
 
     public void OnGameStart()
     {
-        Debug.Log("GameController : GameStarting !");
+        Debug.Log("GameController : GameStarting! No mode selected.");
         GameManager.instance.CameraController.BlackScreenTransition();
     }
 
     public void OnResetSaveOrdered()
     {
-        Debug.Log("GameController : Reset save ordered !");
+        Debug.Log("GameController : Reset save ordered!");
     }
+
+	public void OnNormalModeOrdered ()
+	{
+		Debug.Log("GameController : Switching to Normal mode!");
+		GameManager.instance.TestMode = false;
+		GameManager.instance.PlayerGameObject.GetComponent<FpsMovement> ().InTestMode = false;
+		GameManager.instance.PlayerGameObject.layer = 8;
+	}
 
     public void OnTestModeOrdered ()
     {
-        Debug.Log("GameController : Switching to Test mode !");
+        Debug.Log("GameController : Switching to Test mode!");
+		GameManager.instance.TestMode = true;
+		GameManager.instance.PlayerGameObject.GetComponent<FpsMovement> ().InTestMode = true;
+		GameManager.instance.PlayerGameObject.layer = 11;
+		// Open all doors.
+		foreach (ShadowLevelObject ShadowLevel in GameManager.instance.SceneShadowLevels)
+		{
+			ShadowLevel.UnlockPuzzle();
+		}
     }
 
 	// From fps to puzzle game mode
@@ -67,6 +85,12 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void OnPuzzleCompleted()
+	{
+		GameManager.instance.StartMenuScript.ExitPuzzlePlayAnimation (true);
+		Invoke ("DelayGoingBackToFps", 1.8F);
+	}
+
+	public void DelayGoingBackToFps()
 	{
 		if (ShadowLevelSelected)
 		{
@@ -114,12 +138,10 @@ public class GameController : MonoBehaviour {
 			// Set Puzzle UI;
 			GameManager.instance.MenuGameObject.GetComponent<StartMenuScript>().InPuzzleMenu = false;
 			GameManager.instance.MenuGameObject.GetComponent<StartMenuScript>().ExitPuzzleMenu();
-
 			// Send camera transition order ==> only after this will the controls be given back.
 			// See OnEndTransition() (event called);
 			GameManager.instance.CameraController.ChangeCamPuzzleToPlayer ();
 		}
-
 	}
 
 	// Update is called once per frame
