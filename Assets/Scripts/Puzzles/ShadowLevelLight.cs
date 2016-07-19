@@ -3,8 +3,12 @@ using System.Collections;
 
 public class ShadowLevelLight : MonoBehaviour {
 	private ShadowLevelObject	ShadowLevel;
+	private ShadowLevelObject	PreviousShadowLevel;
+	private ShadowLevelObject	NextShadowLevel;
 	private GameObject			levelLight;
 	private Color				EndColor; // color of level light when puzzleDone;
+	private string				Blue = "#0287C3";
+	private string				Orange = "#FF6600";
 	public bool					LightChanged;
 
 	// Use this for initialization
@@ -13,28 +17,67 @@ public class ShadowLevelLight : MonoBehaviour {
 		ShadowLevel.OnPuzzleDone.AddListener (OnShadowLevelCompleted);
 		ShadowLevel.OnPuzzleUnlock.AddListener (OnShadowLevelUnlock);
 		levelLight = transform.Find ("LevelStatusLight").gameObject;
-		ColorUtility.TryParseHtmlString("#0287C3", out EndColor);
-	}
+		ColorUtility.TryParseHtmlString(Blue, out EndColor);
 
-	void OnShadowLevelCompleted()
-	{
-		ChangeLightColor ();
-	}
+		// set starting light color;
 
-	void OnShadowLevelUnlock()
-	{
-		ChangeLightColor ();
-	}
-
-	void ChangeLightColor()
-	{
-		if (!LightChanged)
+		PreviousShadowLevel = GameManager.instance.GetShadowLevelScript ((ShadowLevel.PuzzleNumber) - 1);
+		NextShadowLevel = GameManager.instance.GetShadowLevelScript ((ShadowLevel.PuzzleNumber) + 1);
+		if (PreviousShadowLevel)
 		{
-			LightChanged = true;
-			levelLight.GetComponent<Light>().color = EndColor;
+			ChangeLightColorToOrange();
 		}
 	}
 
+	/// <summary>
+	/// Respond to the OnPuzzleDone event.
+	/// </summary>
+	void OnShadowLevelCompleted()
+	{
+		ChangeLightColorToBlue ();
+		if (NextShadowLevel)
+		{
+			NextShadowLevel.LightScript.ChangeLightColorToWhite();
+		}
+	}
+
+	/// <summary>
+	/// Respond to the OnPuzzleUnlock event.
+	/// </summary>
+	void OnShadowLevelUnlock()
+	{
+		ChangeLightColorToBlue ();
+	}
+
+	/// <summary>
+	/// Changes the light color to blue.
+	/// </summary>
+	void ChangeLightColorToBlue()
+	{
+		ColorUtility.TryParseHtmlString(Blue, out EndColor);
+		levelLight.GetComponent<Light>().color = EndColor;
+	}
+
+	/// <summary>
+	/// Changes the light color to orange.
+	/// </summary>
+	void ChangeLightColorToOrange()
+	{
+		ColorUtility.TryParseHtmlString(Orange, out EndColor);
+		levelLight.GetComponent<Light>().color = EndColor;
+	}
+
+	/// <summary>
+	/// Changes the light color to white.
+	/// </summary>
+	void ChangeLightColorToWhite()
+	{
+		levelLight.GetComponent<Light>().color = Color.white;
+	}
+
+	/// <summary>
+	/// Resets the color of the light.
+	/// </summary>
 	void ResetLightColor()
 	{
 		if (LightChanged)

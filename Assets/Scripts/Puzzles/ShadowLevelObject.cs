@@ -32,6 +32,11 @@ public class ShadowLevelObject : MonoBehaviour {
     private ShadowGameWinCheck  ShadowGameWinCheck;
 	private ShadowObject		CurrentShadowForm;
 
+	// References for distant order sending.
+	[HideInInspector] 
+	public	ShadowLevelDoor		DoorScript;
+	public	ShadowLevelLight	LightScript;
+
 	[HideInInspector]
 	public UnityEvent			OnPuzzleDone;
 	[HideInInspector]
@@ -42,17 +47,42 @@ public class ShadowLevelObject : MonoBehaviour {
 
     // Use this for pre-initialization
     void Awake() {
+		// Init events
 		OnPuzzleDone = new UnityEvent ();
+
+		// Set Object references
 		PuzzleCamera = transform.Find ("PuzzleCamera").gameObject;
 		FormContainer = transform.Find ("FormContainer").gameObject;
 		FormCount = FormContainer.transform.childCount;
+
+		// Set references scripts.
         ShadowGameplay = GetComponent<ShadowGamePlay>();
         ShadowGameWinCheck = GetComponent<ShadowGameWinCheck>();
+		DoorScript = transform.Find ("Door").GetComponent<ShadowLevelDoor> ();
+		LightScript = transform.Find ("Light").GetComponent<ShadowLevelLight> ();
     }
 
 	void Start()
 	{
 		InitializePuzzle ();
+	}
+
+	void InitializePuzzle()
+	{
+		// init puzzle random settings
+		foreach (Transform child in FormContainer.transform)
+		{
+			CurrentShadowForm = child.gameObject.GetComponent<ShadowObject> ();
+			
+			if (CurrentShadowForm.HasHorizontalRotation)
+				CurrentShadowForm.RandomizeHorizontalRotation();
+			
+			if (CurrentShadowForm.HasVerticalRotation)
+				CurrentShadowForm.RandomizeVerticalRotation();
+			
+			if (CurrentShadowForm.HasOffsetDisplacement)
+				CurrentShadowForm.RandomizePosition();
+		}
 	}
 
 	public void StartPlaying()
@@ -65,25 +95,9 @@ public class ShadowLevelObject : MonoBehaviour {
     public void ExitPlaying()
     {
         ShadowGameplay.enabled = false;
+		ShadowGameWinCheck.AllFormOkay.RemoveListener (OnPuzzleSuccess);
+		ShadowGameWinCheck.enabled = false;
     }
-
-    void InitializePuzzle()
-	{
-		// init puzzle random settings
-		foreach (Transform child in FormContainer.transform)
-		{
-			CurrentShadowForm = child.gameObject.GetComponent<ShadowObject> ();
-
-			if (CurrentShadowForm.HasHorizontalRotation)
-				CurrentShadowForm.RandomizeHorizontalRotation();
-
-			if (CurrentShadowForm.HasVerticalRotation)
-				CurrentShadowForm.RandomizeVerticalRotation();
-
-			if (CurrentShadowForm.HasOffsetDisplacement)
-				CurrentShadowForm.RandomizePosition();
-		}
-	}
 
 	/// <summary>
 	/// Raises the puzzle success event.

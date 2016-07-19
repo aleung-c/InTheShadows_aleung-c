@@ -21,6 +21,9 @@ public class ShadowLevelDoor : MonoBehaviour {
 		ShadowLevel.OnPuzzlelock.AddListener (CloseDoorInstant);
 	}
 
+	/// <summary>
+	/// Respond to the OnPuzzleDone event.
+	/// </summary>
 	void OnShadowLevelCompleted()
 	{
 		// open door;

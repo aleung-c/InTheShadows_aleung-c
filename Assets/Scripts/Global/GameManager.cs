@@ -59,7 +59,20 @@ public class GameManager : MonoBehaviour {
         SaveObject.Current = SaveManager.CurrentSave;
         // GameController will take care of level loading.
     }
-	
+
+	public ShadowLevelObject GetShadowLevelScript(int LevelNumber)
+	{
+		foreach (ShadowLevelObject Level in SceneShadowLevels)
+		{
+			if (Level.PuzzleNumber == LevelNumber)
+			{
+				return (Level);
+			}
+		}
+		return (null);
+	}
+
+	// unused for now ?
     public void LoadSaveFile()
     {
 

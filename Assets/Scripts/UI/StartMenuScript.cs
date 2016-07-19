@@ -82,6 +82,7 @@ public class StartMenuScript : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.Escape) && InPuzzleMenu == true && InOtherMenu == false)
 		{
+			ExitPuzzlePlayAnimation(false);
 			GameManager.instance.GameController.PuzzleToFpsMode();
 		}
 	}
