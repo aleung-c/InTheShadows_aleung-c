@@ -45,7 +45,7 @@ public class UIFormStatus : MonoBehaviour {
 		FormScript = CorrespondingObject.GetComponent<ShadowObject> ();
 
 		// set Name
-		// FormStatusTitleText = (FormScript.gameObject.name.ToString());
+		FormStatusTitleText.text = (FormScript.gameObject.name.ToString());
 
 		// Update Angle Value display;
 		CurAngleDiff = Quaternion.Angle (FormScript.TargetRotation, FormScript.ObjRotation.transform.GetChild(0).transform.rotation);
