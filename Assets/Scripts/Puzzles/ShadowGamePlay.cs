@@ -9,7 +9,9 @@ public class ObjectClickingEvent : UnityEvent<GameObject>{}
 /// Shadow game play. Works with event sending clicked form;
 /// </summary>
 public class ShadowGamePlay : MonoBehaviour {
-    public GameObject   FormContainer;
+	// ---------------------------------------- //
+    public GameObject   		FormContainer;
+	// ---------------------------------------- //
     [Header("In game private visible")]
     [SerializeField]
     public bool        			Clicking;
@@ -30,6 +32,9 @@ public class ShadowGamePlay : MonoBehaviour {
 
     private KeyCode      		displacementModeKey;
     private KeyCode      		displacementModeKeyAlt;
+
+	private KeyCode				resetPuzzleKey;
+	private KeyCode				resetPuzzleKeyAlt;
 
     // Settings
     private float                RotationSpeed;
@@ -55,6 +60,9 @@ public class ShadowGamePlay : MonoBehaviour {
 
         displacementModeKey = GameManager.instance.KeyManager.DisplacementPuzzleButton;
         displacementModeKeyAlt = GameManager.instance.KeyManager.DisplacementPuzzleButtonAlt;
+
+		resetPuzzleKey = GameManager.instance.KeyManager.ResetPuzzleKey;
+		resetPuzzleKeyAlt = GameManager.instance.KeyManager.ResetPuzzleKeyAlt;
     }
 
     // Use this for initialization
@@ -95,9 +103,9 @@ public class ShadowGamePlay : MonoBehaviour {
 			if (CurrentFormScript.HasOffsetDisplacement && pressingDisplacementMode)
             {
 				newFormPosition.y += Mathf.Clamp(Input.GetAxis("MouseVertical")
-	                             	* DisplacementSpeed * Time.deltaTime, -0.9F, 0.9F);
+	                             	* DisplacementSpeed * Time.deltaTime, -1.0F, 1.0F);
 				newFormPosition.x += Mathf.Clamp(Input.GetAxis("MouseHorizontal")
-                                 	* DisplacementSpeed * Time.deltaTime, -1.5F, 1.5F);
+                                 	* DisplacementSpeed * Time.deltaTime, -1.0F, 1.0F);
 				CurrentFormScript.ObjOffset.transform.localPosition = newFormPosition;
 
 			}
@@ -142,6 +150,20 @@ public class ShadowGamePlay : MonoBehaviour {
             pressingDisplacementMode = true;
         if (Input.GetKeyUp(displacementModeKey) || Input.GetKeyUp(displacementModeKeyAlt))
             pressingDisplacementMode = false;
+
+		if ((Input.GetKeyDown (resetPuzzleKey) || Input.GetKeyDown (resetPuzzleKeyAlt)) && Clicking == false)
+		{
+			foreach (Transform Child in FormContainer.transform)
+			{
+				CurrentFormScript = Child.GetComponent<ShadowObject> ();
+				if (CurrentFormScript.HasVerticalRotation)
+					CurrentFormScript.RandomizeVerticalRotation();
+				if (CurrentFormScript.HasHorizontalRotation)
+					CurrentFormScript.RandomizeHorizontalRotation();
+				if (CurrentFormScript.HasOffsetDisplacement)
+					CurrentFormScript.RandomizePosition();
+			}
+		}
         
         // Interaction Cheking;
 		if (Clicking == true)

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PuzzleMenuPanelScript : MonoBehaviour {
@@ -6,6 +7,9 @@ public class PuzzleMenuPanelScript : MonoBehaviour {
 	public GameObject			FormStatusPrefab;
 	public GameObject			FormStatusUIContainer;
 	public GameObject			CurrentSpawnedObj;
+
+	private GameObject			VText;
+	private GameObject			MText;
 
 	// others.
 	private int					i;
@@ -17,6 +21,9 @@ public class PuzzleMenuPanelScript : MonoBehaviour {
         defaultLocalScale.x = 1.0F;
         defaultLocalScale.y = 1.0F;
         defaultLocalScale.z = 1.0F;
+
+		VText = transform.Find ("MainPanel").transform.Find ("LowerRightPanel").transform.Find ("VText").gameObject;
+		MText = transform.Find ("MainPanel").transform.Find ("LowerRightPanel").transform.Find ("MText").gameObject;
     }
 
 	// Use this for initialization
@@ -24,6 +31,8 @@ public class PuzzleMenuPanelScript : MonoBehaviour {
 	{
 		if (CurrentLevel)
 		{
+
+
 			for (i = 0; i < CurrentLevel.FormCount; i++)
 			{
 				CurrentSpawnedObj = (GameObject)Instantiate (FormStatusPrefab, Vector3.zero, Quaternion.identity);
@@ -32,6 +41,19 @@ public class PuzzleMenuPanelScript : MonoBehaviour {
 				CurrentSpawnedObj.transform.SetParent(FormStatusUIContainer.transform);
                 CurrentSpawnedObj.transform.localScale = defaultLocalScale;
             }
+
+			// Set UI HELP //
+			if (CurrentLevel.FormContainer.transform.GetChild(0).GetComponent<ShadowObject> ().HasVerticalRotation) {
+				VText.SetActive(true);
+			} else {
+				VText.SetActive(false);
+			}
+
+			if (CurrentLevel.FormContainer.transform.GetChild(0).GetComponent<ShadowObject> ().HasOffsetDisplacement) {
+				MText.SetActive(true);
+			} else {
+				MText.SetActive(false);
+			}
 		}
 	}
 

@@ -30,6 +30,9 @@ public class KeyControlManager : MonoBehaviour {
     public KeyCode      InteractKey;
     public KeyCode      InteractKeyAlt;
 
+	public KeyCode      ResetPuzzleKey;
+	public KeyCode      ResetPuzzleKeyAlt;
+
     [Header("Puzzle Part")]
     public KeyCode      VerticalPuzzleButton;
     public KeyCode      VerticalPuzzleButtonAlt;

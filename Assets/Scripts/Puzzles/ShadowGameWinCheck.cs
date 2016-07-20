@@ -48,9 +48,13 @@ public class ShadowGameWinCheck : MonoBehaviour {
 			targetRotation = childScript.TargetRotation;
 			if (Quaternion.Angle(targetRotation, objRotation.transform.GetChild(0).transform.rotation) < checkMarginRotation)
 			{
-				CurNbOfCorrect += 1;
-				if (!childScript.OrderSentFormDone)
-					childScript.FormDone.Invoke();
+				if (!childScript.HasOffsetDisplacement
+				    || Vector3.Distance(childScript.TargetPosition, childScript.ObjOffset.transform.position) < checkMarginPosition)
+				{
+					CurNbOfCorrect += 1;
+					if (!childScript.OrderSentFormDone)
+						childScript.FormDone.Invoke();
+				}
 			}
 		}
 

@@ -2,31 +2,35 @@
 using System.Collections;
 
 public class ShadowLevelLight : MonoBehaviour {
-	private ShadowLevelObject	ShadowLevel;
-	private ShadowLevelObject	PreviousShadowLevel;
-	private ShadowLevelObject	NextShadowLevel;
-	private GameObject			levelLight;
-	private Color				EndColor; // color of level light when puzzleDone;
-	private string				Blue = "#0287C3";
-	private string				Orange = "#FF6600";
-	public bool					LightChanged;
+	private ShadowLevelObject	shadowLevel;
+	private ShadowLevelObject	previousShadowLevel;
+	private ShadowLevelObject	nextShadowLevel;
+	private Color				endColor; // color of level light when puzzleDone;
+	private string				blue = "#0287C3";
+	private string				orange = "#FF6600";
+	private Light[]				levelLights;
 
 	// Use this for initialization
-	void Start () {
-		ShadowLevel = transform.parent.GetComponent<ShadowLevelObject> ();
-		ShadowLevel.OnPuzzleDone.AddListener (OnShadowLevelCompleted);
-		ShadowLevel.OnPuzzleUnlock.AddListener (OnShadowLevelUnlock);
-		levelLight = transform.Find ("LevelStatusLight").gameObject;
-		ColorUtility.TryParseHtmlString(Blue, out EndColor);
+	void Start ()
+	{
+		shadowLevel = transform.parent.GetComponent<ShadowLevelObject> ();
+		shadowLevel.OnPuzzleDone.AddListener (OnShadowLevelCompleted);
+		shadowLevel.OnPuzzleUnlock.AddListener (OnShadowLevelUnlock);
+		levelLights = transform.GetComponentsInChildren<Light> ();
 
-		// set starting light color;
-
-		PreviousShadowLevel = GameManager.instance.GetShadowLevelScript ((ShadowLevel.PuzzleNumber) - 1);
-		NextShadowLevel = GameManager.instance.GetShadowLevelScript ((ShadowLevel.PuzzleNumber) + 1);
-		if (PreviousShadowLevel)
+		// Set starting light color;
+		previousShadowLevel = GameManager.instance.GetShadowLevelScript ((shadowLevel.PuzzleNumber) - 1);
+		nextShadowLevel = GameManager.instance.GetShadowLevelScript ((shadowLevel.PuzzleNumber) + 1);
+		if (previousShadowLevel)
 		{
-			ChangeLightColorToOrange();
+			ChangeLightsColorToOrange();
 		}
+	}
+
+	void OnDisable()
+	{
+		shadowLevel.OnPuzzleDone.RemoveListener (OnShadowLevelCompleted);
+		shadowLevel.OnPuzzleUnlock.RemoveListener (OnShadowLevelUnlock);
 	}
 
 	/// <summary>
@@ -34,10 +38,10 @@ public class ShadowLevelLight : MonoBehaviour {
 	/// </summary>
 	void OnShadowLevelCompleted()
 	{
-		ChangeLightColorToBlue ();
-		if (NextShadowLevel)
+		ChangeLightsColorToBlue ();
+		if (nextShadowLevel)
 		{
-			NextShadowLevel.LightScript.ChangeLightColorToWhite();
+			nextShadowLevel.LightScript.ChangeLightsColorToWhite();
 		}
 	}
 
@@ -46,44 +50,40 @@ public class ShadowLevelLight : MonoBehaviour {
 	/// </summary>
 	void OnShadowLevelUnlock()
 	{
-		ChangeLightColorToBlue ();
+		ChangeLightsColorToBlue ();
 	}
-
-	/// <summary>
-	/// Changes the light color to blue.
-	/// </summary>
-	void ChangeLightColorToBlue()
+	
+	void ChangeLightsColorToBlue()
 	{
-		ColorUtility.TryParseHtmlString(Blue, out EndColor);
-		levelLight.GetComponent<Light>().color = EndColor;
-	}
-
-	/// <summary>
-	/// Changes the light color to orange.
-	/// </summary>
-	void ChangeLightColorToOrange()
-	{
-		ColorUtility.TryParseHtmlString(Orange, out EndColor);
-		levelLight.GetComponent<Light>().color = EndColor;
-	}
-
-	/// <summary>
-	/// Changes the light color to white.
-	/// </summary>
-	void ChangeLightColorToWhite()
-	{
-		levelLight.GetComponent<Light>().color = Color.white;
-	}
-
-	/// <summary>
-	/// Resets the color of the light.
-	/// </summary>
-	void ResetLightColor()
-	{
-		if (LightChanged)
+		ColorUtility.TryParseHtmlString(blue, out endColor);
+		foreach (Light light in levelLights)
 		{
-			LightChanged = false;
-			levelLight.GetComponent<Light>().color = Color.white;
+			light.color = endColor;
+		}
+	}
+
+	void ChangeLightsColorToOrange()
+	{
+		ColorUtility.TryParseHtmlString(orange, out endColor);
+		foreach (Light light in levelLights)
+		{
+			light.color = endColor;
+		}
+	}
+	
+	void ChangeLightsColorToWhite()
+	{
+		foreach (Light light in levelLights)
+		{
+			light.color = Color.white;
+		}
+	}
+
+	void ResetLightsColor()
+	{
+		foreach (Light light in levelLights)
+		{
+			light.color = Color.white;
 		}
 	}
 

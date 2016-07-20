@@ -17,6 +17,7 @@ public class UIFormStatus : MonoBehaviour {
 
     private bool        	Active = false;
 	private float			CurAngleDiff;
+	private float			CurPosDiff;
 	private float			PercentageCalculation;
 	private ShadowObject	FormScript;
 
@@ -46,7 +47,7 @@ public class UIFormStatus : MonoBehaviour {
 		// set Name
 		// FormStatusTitleText = (FormScript.gameObject.name.ToString());
 
-		// Update Angle Value display
+		// Update Angle Value display;
 		CurAngleDiff = Quaternion.Angle (FormScript.TargetRotation, FormScript.ObjRotation.transform.GetChild(0).transform.rotation);
 
 		// Make it look like a percentage
@@ -54,6 +55,21 @@ public class UIFormStatus : MonoBehaviour {
 		if (PercentageCalculation < 0.0F)
 			PercentageCalculation = 0.0F;
 		FormStatusOrientationText.text = (PercentageCalculation.ToString("F2")) + " %";
+
+		// Update OffsetPosition Value display;
+		if (FormScript.HasOffsetDisplacement)
+		{
+			CurPosDiff = Vector3.Distance(FormScript.TargetPosition, FormScript.ObjOffset.transform.position) * 10.0F;
+			//Debug.Log(CurPosDiff);
+			PercentageCalculation = 100.0F - CurPosDiff;
+			if (PercentageCalculation < 0.0F)
+				PercentageCalculation = 0.0F;
+			FormStatusPositionText.text = (PercentageCalculation.ToString ("F2")) + " %";
+		}
+		else
+		{
+			FormStatusPositionText.text = "OK";
+		}
     }
 
     IEnumerator UpdateUIStatusRoutine()
