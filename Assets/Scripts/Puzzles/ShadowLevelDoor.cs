@@ -36,11 +36,11 @@ public class ShadowLevelDoor : MonoBehaviour {
 
 	public void OpenDoorInstant()
 	{
-		if (DoorOpened == false)
-		{
+		//if (DoorOpened == false)
+		//{
 			GetComponent<Animator> ().SetTrigger ("InstantOpen");
 			DoorOpened = true;
-		}
+		//}
 	}
 
 	public void CloseDoorInstant()

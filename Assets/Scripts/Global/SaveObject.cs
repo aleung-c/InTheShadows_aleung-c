@@ -3,9 +3,13 @@ using System.Collections;
 
 [System.Serializable]
 public class SaveObject {
-	public static SaveObject 	Current;
-	
-	// List of puzzles
+
+	// Adventure datas
+	public float				PlayerPositionX;
+	public float				PlayerPositionY;
+	public float				PlayerPositionZ;
+
+	// Puzzle data
 	public bool					Puzzle1Done;
 	public bool					Puzzle2Done;
 	public bool					Puzzle3Done;

@@ -13,29 +13,73 @@ public class GameController : MonoBehaviour {
 	public bool					InPuzzleMode = false;
 	public ShadowLevelObject	ShadowLevelSelected;
 
+	private int					LevelToUnlock;
+	private Vector3				NewPlayerPosition;
+
 	// Use this for initialization
 	void Start () {
 		// Before anything visible begins.
 		MainPlayer = GameManager.instance.PlayerGameObject;
         GameManager.instance.CameraController.OnEndMoveTransition.AddListener(OnEndTransition);
+
+		// ------------ Set world from Save
+		// Place Player;
+		NewPlayerPosition = GameManager.instance.PlayerGameObject.transform.position;
+		NewPlayerPosition.x = SaveManager.CurrentSave.PlayerPositionX;
+		NewPlayerPosition.y = SaveManager.CurrentSave.PlayerPositionY;
+		NewPlayerPosition.z = SaveManager.CurrentSave.PlayerPositionZ;
+		if (NewPlayerPosition == Vector3.zero)
+		{
+			NewPlayerPosition = GameObject.Find("PlayerStart").transform.position;
+		}
+
+		GameManager.instance.PlayerGameObject.transform.position = NewPlayerPosition;
+
+		// Open done puzzles.
+		if (SaveManager.CurrentSave.Puzzle1Done == true) {
+			LevelToUnlock = 1;
+			Invoke("DelayedLevelUnlock", 0.1F);
+		}
+		if (SaveManager.CurrentSave.Puzzle2Done == true) {
+			LevelToUnlock = 2;
+			Invoke("DelayedLevelUnlock", 0.1F);
+		}
+		if (SaveManager.CurrentSave.Puzzle3Done == true) {
+			LevelToUnlock = 3;
+			Invoke("DelayedLevelUnlock", 0.1F);
+		}
+		if (SaveManager.CurrentSave.Puzzle4Done == true) {
+			LevelToUnlock = 4;
+			Invoke("DelayedLevelUnlock", 0.1F);
+		}
+		if (SaveManager.CurrentSave.Puzzle5Done == true) {
+			LevelToUnlock = 5;
+			Invoke("DelayedLevelUnlock", 0.1F);
+		}
+
 		// GameStart, no mode selected.
         OnGameStart();
     }
 
+	public void DelayedLevelUnlock()
+	{
+		GameManager.instance.GetShadowLevelScript(LevelToUnlock).UnlockPuzzle();
+	}
+
     public void OnGameStart()
     {
-        Debug.Log("GameController : GameStarting! No mode selected.");
+        Debug.Log("GameController: GameStarting! No mode selected.");
         GameManager.instance.CameraController.BlackScreenTransition();
     }
 
     public void OnResetSaveOrdered()
     {
-        Debug.Log("GameController : Reset save ordered!");
+        Debug.Log("GameController: Reset save ordered!");
     }
 
 	public void OnNormalModeOrdered ()
 	{
-		Debug.Log("GameController : Switching to Normal mode!");
+		Debug.Log("GameController: Switching to Normal mode!");
 		GameManager.instance.TestMode = false;
 		GameManager.instance.PlayerGameObject.GetComponent<FpsMovement> ().InTestMode = false;
 		GameManager.instance.PlayerGameObject.layer = 8;
@@ -43,7 +87,7 @@ public class GameController : MonoBehaviour {
 
     public void OnTestModeOrdered ()
     {
-        Debug.Log("GameController : Switching to Test mode!");
+        Debug.Log("GameController: Switching to Test mode!");
 		GameManager.instance.TestMode = true;
 		GameManager.instance.PlayerGameObject.GetComponent<FpsMovement> ().InTestMode = true;
 		GameManager.instance.PlayerGameObject.layer = 11;
@@ -92,9 +136,11 @@ public class GameController : MonoBehaviour {
 
 	public void DelayGoingBackToFps()
 	{
-		if (ShadowLevelSelected)
+		// Handle Save
+		if (ShadowLevelSelected && GameManager.instance.TestMode == false)
 		{
-			// Handle Save
+			GameManager.instance.SaveGameDatasFromWorld();
+			GameManager.instance.RefreshSaveGMDisplay();
 		}
 		PuzzleToFpsMode ();
 	}

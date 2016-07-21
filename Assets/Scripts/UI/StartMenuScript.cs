@@ -28,6 +28,13 @@ public class StartMenuScript : MonoBehaviour {
 	[SerializeField]
 	private Animator    LoadGamePanelAnimator;
 
+	[Header("Load Game Menu references")]
+	[SerializeField]
+	private GameObject  InGamePanel;
+	[SerializeField]
+	private Animator    InGamePanelAnimator;
+
+
     public bool         CanInteract = true;
     public bool         OutOfMenu = false;
 	public bool			InOtherMenu = false;
@@ -50,15 +57,20 @@ public class StartMenuScript : MonoBehaviour {
 		LoadGamePanel = transform.Find ("LoadGamePanel").gameObject;
 		LoadGamePanelAnimator = LoadGamePanel.GetComponent<Animator> ();
 
+		InGamePanel = transform.Find ("InGamePanel").gameObject;
+		InGamePanelAnimator = InGamePanel.GetComponent<Animator> ();
+
 		// Set all as it should be
 		MainMenuPanel.SetActive (true);
 		OptionPanel.SetActive (false);
 		PuzzlePanel.SetActive (false);
 		LoadGamePanel.SetActive (false);
+		InGamePanel.SetActive (false);
     }
 	
 	// Update is called once per frame
 	void Update () {
+		// Handling escape key.
 		if (Input.GetKeyDown (KeyCode.Escape) && OutOfMenu == true && InPuzzleMenu == false && InOtherMenu == false) // not in any menu
 		{
 			OutOfMenu = false;
@@ -110,6 +122,7 @@ public class StartMenuScript : MonoBehaviour {
 			GameManager.instance.GameController.InMenu = false;
             GameManager.instance.KeyManager.MouseSensitivityX *= 2.0F;
             GameManager.instance.KeyManager.MouseSensitivityY *= 2.0F;
+
             // Call to Game Controller
             GameManager.instance.GameController.OnTestModeOrdered();
         }
@@ -118,6 +131,7 @@ public class StartMenuScript : MonoBehaviour {
     public void OnClickQuit() {
 		if (OutOfMenu == false && InPuzzleMenu == false) // in main menu
 		{
+			GameManager.instance.SaveGameDatasFromWorld();
 #if UNITY_EDITOR
 			Debug.Log ("Quit pressed");
 #else

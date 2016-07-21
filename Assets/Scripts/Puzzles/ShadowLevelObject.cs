@@ -43,6 +43,8 @@ public class ShadowLevelObject : MonoBehaviour {
 	public UnityEvent			OnPuzzleUnlock;
 	[HideInInspector]
 	public UnityEvent			OnPuzzlelock;
+	[HideInInspector]
+	public bool					PuzzleDoneOrderSent;
 
 
     // Use this for pre-initialization
@@ -87,8 +89,13 @@ public class ShadowLevelObject : MonoBehaviour {
 
 	public void StartPlaying()
 	{
+		PuzzleDoneOrderSent = false;
         ShadowGameplay.enabled = true;
         ShadowGameWinCheck.enabled = true;
+		if (PuzzleDone == true) { // retrying puzzle. Rerandomize;
+			InitializePuzzle();
+		}
+
 		ShadowGameWinCheck.AllFormOkay.AddListener (OnPuzzleSuccess);
     }
 
@@ -104,12 +111,15 @@ public class ShadowLevelObject : MonoBehaviour {
 	/// </summary>
 	public void OnPuzzleSuccess()
 	{
-		Debug.Log ("Puzzle Done !");
-        PuzzleDone = true;
-		ShadowGameplay.Clicking = false;
-		ShadowGameplay.enabled = false;
-		ShadowGameWinCheck.enabled = false;
-        OnPuzzleDone.Invoke ();
+		if (PuzzleDoneOrderSent == false) {
+			PuzzleDoneOrderSent = true;
+			Debug.Log ("Puzzle Done !");
+	        PuzzleDone = true;
+			ShadowGameplay.Clicking = false;
+			ShadowGameplay.enabled = false;
+			ShadowGameWinCheck.enabled = false;
+			OnPuzzleDone.Invoke ();
+		}
 	}
 
     // will be called for save loading;

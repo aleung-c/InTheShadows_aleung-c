@@ -59,8 +59,8 @@ public class ShadowGameWinCheck : MonoBehaviour {
 		}
 
 		if (!PuzzleDoneOrderSent && CurNbOfCorrect == TargetCorrectNumber) {
-			AllFormOkay.Invoke();
 			PuzzleDoneOrderSent = true;
+			AllFormOkay.Invoke();
 		}
 	}
 }

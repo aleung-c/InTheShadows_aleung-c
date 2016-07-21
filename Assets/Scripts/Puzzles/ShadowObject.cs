@@ -70,8 +70,8 @@ public class ShadowObject : MonoBehaviour {
 
 	public void RandomizePosition()
 	{
-		NewPosition.x = Random.Range(-1.0F, 1.0F);
-		NewPosition.y = Random.Range(-1.0F, 1.0F);
+		NewPosition.x = Random.Range(-0.5F, 0.5F);
+		NewPosition.y = Random.Range(-0.5F, 0.5F);
 		NewPosition.z = ObjOffset.transform.localPosition.z;
 		ObjOffset.transform.localPosition = NewPosition;
 	}

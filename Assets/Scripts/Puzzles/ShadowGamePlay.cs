@@ -102,11 +102,12 @@ public class ShadowGamePlay : MonoBehaviour {
             // Displacement //
 			if (CurrentFormScript.HasOffsetDisplacement && pressingDisplacementMode)
             {
-				newFormPosition.y += Mathf.Clamp(Input.GetAxis("MouseVertical")
-	                             	* DisplacementSpeed * Time.deltaTime, -1.0F, 1.0F);
-				newFormPosition.x += Mathf.Clamp(Input.GetAxis("MouseHorizontal")
-                                 	* DisplacementSpeed * Time.deltaTime, -1.0F, 1.0F);
+				newFormPosition.x += Input.GetAxis("MouseHorizontal") * DisplacementSpeed * Time.deltaTime;
+				newFormPosition.x = Mathf.Clamp(newFormPosition.x, -0.5F, 0.5F);
+				newFormPosition.y += Input.GetAxis("MouseVertical") * DisplacementSpeed * Time.deltaTime;
+				newFormPosition.y = Mathf.Clamp(newFormPosition.y, -0.5F, 0.5F);
 				CurrentFormScript.ObjOffset.transform.localPosition = newFormPosition;
+				Debug.Log(CurrentFormScript.ObjOffset.transform.localPosition);
 
 			}
             // Vertical //
