@@ -75,6 +75,24 @@ public class GameController : MonoBehaviour {
     public void OnResetSaveOrdered()
     {
         Debug.Log("GameController: Reset save ordered!");
+        GameManager.instance.CameraController.BlackScreenTransition();
+        GameManager.instance.StartMenuScript.OnClickOptionsBack();
+        Invoke("DelayedSaveReset", 2.5F);
+    }
+
+    public void DelayedSaveReset()
+    {
+        // When screen is black.
+        // Replace player and camera;
+        GameManager.instance.PlayerGameObject.transform.position = GameObject.Find("PlayerStart").transform.position;
+        GameManager.instance.CameraController.ActiveCamera.transform.LookAt(GameObject.Find("PlayerStartLookPoint").transform);
+        // Close puzzles.
+        foreach (ShadowLevelObject ShadowLevel in GameManager.instance.SceneShadowLevels)
+        {
+            ShadowLevel.LockPuzzle();
+        }
+        SaveManager.CurrentSave = new SaveObject();
+        GameManager.instance.CameraController.BlackScreenTransition();
     }
 
 	public void OnNormalModeOrdered ()

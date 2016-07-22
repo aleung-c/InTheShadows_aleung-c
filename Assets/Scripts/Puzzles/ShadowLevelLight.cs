@@ -16,7 +16,8 @@ public class ShadowLevelLight : MonoBehaviour {
 		shadowLevel = transform.parent.GetComponent<ShadowLevelObject> ();
 		shadowLevel.OnPuzzleDone.AddListener (OnShadowLevelCompleted);
 		shadowLevel.OnPuzzleUnlock.AddListener (OnShadowLevelUnlock);
-		levelLights = transform.GetComponentsInChildren<Light> ();
+        shadowLevel.OnPuzzlelock.AddListener(OnShadowLevelLock);
+        levelLights = transform.GetComponentsInChildren<Light> ();
 
 		// Set starting light color;
 		previousShadowLevel = GameManager.instance.GetShadowLevelScript ((shadowLevel.PuzzleNumber) - 1);
@@ -52,8 +53,24 @@ public class ShadowLevelLight : MonoBehaviour {
 	{
 		ChangeLightsColorToBlue ();
 	}
-	
-	void ChangeLightsColorToBlue()
+
+    /// <summary>
+	/// Respond to the OnPuzzleUnlock event.
+	/// </summary>
+	void OnShadowLevelLock()
+    {
+        ChangeLightsColorToOrange();
+
+        // Set starting light color;
+        previousShadowLevel = GameManager.instance.GetShadowLevelScript((shadowLevel.PuzzleNumber) - 1);
+        nextShadowLevel = GameManager.instance.GetShadowLevelScript((shadowLevel.PuzzleNumber) + 1);
+        if (previousShadowLevel)
+        {
+            ChangeLightsColorToOrange();
+        }
+    }
+
+    void ChangeLightsColorToBlue()
 	{
 		ColorUtility.TryParseHtmlString(blue, out endColor);
 		foreach (Light light in levelLights)
