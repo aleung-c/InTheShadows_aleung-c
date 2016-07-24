@@ -69,18 +69,20 @@ public class StartMenuScript : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		// Handling escape key.
-		if (Input.GetKeyDown (KeyCode.Escape) && OutOfMenu == true && InPuzzleMenu == false && InOtherMenu == false) // not in any menu
+		if (Input.GetKeyDown (KeyCode.Escape)
+            && OutOfMenu == true
+            && InPuzzleMenu == false
+            && InOtherMenu == false) // not in any menu
 		{
-			OutOfMenu = false;
-			GameManager.instance.GameController.InMenu = true;
-			MainMenuPanel.SetActive (true);
-			MainPanelAnimator.SetTrigger ("AppearAll");
-			GameManager.instance.KeyManager.MouseSensitivityX /= 2.0F;
-			GameManager.instance.KeyManager.MouseSensitivityY /= 2.0F;
+            OpenMainMenu();
 		}
-		else if (Input.GetKeyDown (KeyCode.Escape) && OutOfMenu == false && InPuzzleMenu == false && InOtherMenu == false) // in main menu
+		else if (Input.GetKeyDown (KeyCode.Escape)
+                && OutOfMenu == false
+                && InPuzzleMenu == false
+                && InOtherMenu == false) // in main menu
 		{
 			if (GameManager.instance.TestMode == false)
 			{
@@ -91,15 +93,26 @@ public class StartMenuScript : MonoBehaviour {
 				OnClickTestMode();
 			}
 		}
-
-		if (Input.GetKeyDown(KeyCode.Escape) && InPuzzleMenu == true && InOtherMenu == false)
-		{
+		else if (Input.GetKeyDown(KeyCode.Escape)
+            && InPuzzleMenu == true
+            && InOtherMenu == false) // in main menu
+        {
 			ExitPuzzlePlayAnimation(false);
 			GameManager.instance.GameController.PuzzleToFpsMode();
 		}
 	}
 
     // METHODS FOR THE MAIN MENU SCREEN --------------------------------//
+    public void OpenMainMenu()
+    {
+        OutOfMenu = false;
+        GameManager.instance.GameController.InMenu = true;
+        MainMenuPanel.SetActive(true);
+        MainPanelAnimator.SetTrigger("AppearAll");
+        GameManager.instance.KeyManager.MouseSensitivityX /= 2.0F;
+        GameManager.instance.KeyManager.MouseSensitivityY /= 2.0F;
+    }
+
     public void OnClickNormalMode() {
         if (CanInteract)
         {

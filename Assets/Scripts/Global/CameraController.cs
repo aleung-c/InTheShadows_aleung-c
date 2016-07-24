@@ -137,8 +137,8 @@ public class CameraController : MonoBehaviour {
 				{
 					IsScreenWhite = false;
 					ScreenTransitionEnd.Invoke();
-					yield return null;
-				}
+                    yield break;
+                }
 			}
 			else 
 			{
@@ -149,8 +149,8 @@ public class CameraController : MonoBehaviour {
 				{
 					IsScreenWhite = true;
 					ScreenTransitionEnd.Invoke();
-					yield return null;
-				}
+                    yield break;
+                }
 			}
 			yield return new WaitForSeconds(0.01F);
 		}

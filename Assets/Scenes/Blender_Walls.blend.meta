@@ -62,6 +62,10 @@ ModelImporter:
     100108: LongPlane
     100110: DoubleLongPlane
     100112: HalfLongPlane
+    100114: SwordBlade
+    100116: SwordHandle
+    100118: SwordHandleDecoration
+    100120: SwordHilt
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -119,6 +123,10 @@ ModelImporter:
     400108: LongPlane
     400110: DoubleLongPlane
     400112: HalfLongPlane
+    400114: SwordBlade
+    400116: SwordHandle
+    400118: SwordHandleDecoration
+    400120: SwordHilt
     2300000: Cube
     2300002: Cube_001
     2300004: Cube_002
@@ -175,6 +183,10 @@ ModelImporter:
     2300106: LongPlane
     2300108: DoubleLongPlane
     2300110: HalfLongPlane
+    2300112: SwordBlade
+    2300114: SwordHandle
+    2300116: SwordHandleDecoration
+    2300118: SwordHilt
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
@@ -231,6 +243,10 @@ ModelImporter:
     3300106: LongPlane
     3300108: DoubleLongPlane
     3300110: HalfLongPlane
+    3300112: SwordBlade
+    3300114: SwordHandle
+    3300116: SwordHandleDecoration
+    3300118: SwordHilt
     4300000: Cube_002
     4300002: Cube
     4300004: Cube_003
@@ -287,6 +303,10 @@ ModelImporter:
     4300106: LongPlane
     4300108: HalfLongPlane
     4300110: DoubleLongPlane
+    4300112: SwordHandleDecoration
+    4300114: SwordHilt
+    4300116: SwordBlade
+    4300118: SwordHandle
     7400000: Default Take
     9500000: //RootNode
   materials:

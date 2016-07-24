@@ -93,6 +93,7 @@ public class GameController : MonoBehaviour {
         }
         SaveManager.CurrentSave = new SaveObject();
         GameManager.instance.CameraController.BlackScreenTransition();
+        GameManager.instance.SaveGameDatasFromWorld();
     }
 
 	public void OnNormalModeOrdered ()
@@ -208,8 +209,41 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	// Update is called once per frame
-	void Update () {
+    // On End Reached
+    public void OnEndReached()
+    {
+        Debug.Log("GameController: end reached! Reseting save...");
+        GameManager.instance.CameraController.WhiteScreenTransition();
+        // block player input;
+        GameManager.instance.PlayerGameObject.GetComponent<FpsCameraControl>().enabled = false;
+        GameManager.instance.PlayerGameObject.GetComponent<FpsMovement>().enabled = false;
+        // transitionning to end and reset;
+        Invoke("DelayedSaveResetEndGame", 2.5F);
+    }
+
+    public void DelayedSaveResetEndGame()
+    {
+        // When screen is white.
+        // Replace player and camera;
+        GameManager.instance.PlayerGameObject.transform.position = GameObject.Find("PlayerStart").transform.position;
+        GameManager.instance.CameraController.ActiveCamera.transform.LookAt(GameObject.Find("PlayerStartLookPoint").transform);
+        // Close puzzles.
+        foreach (ShadowLevelObject ShadowLevel in GameManager.instance.SceneShadowLevels)
+        {
+            ShadowLevel.LockPuzzle();
+        }
+        SaveManager.CurrentSave = new SaveObject();
+        GameManager.instance.CameraController.WhiteScreenTransition();
+        GameManager.instance.StartMenuScript.OpenMainMenu();
+        GameManager.instance.SaveGameDatasFromWorld();
+        // reactive player
+        GameManager.instance.PlayerGameObject.GetComponent<FpsCameraControl>().enabled = true;
+        GameManager.instance.PlayerGameObject.GetComponent<FpsMovement>().enabled = true;
+        GameManager.instance.PlayerGameObject.GetComponent<AdventurePlayer>().IsInEndTransition = false;
+    }
+
+    // Update is called once per frame
+    void Update () {
 	
 	}
 }

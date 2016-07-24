@@ -18,7 +18,9 @@ public class AdventurePlayer : MonoBehaviour {
 
 	[Header("Player Current Interactions")]
 	public bool					IsInPuzzleInteractZone = false;
-	public GameObject			CollidingPuzzle;
+    public bool                 IsInEndZone = false;
+    public bool                 IsInEndTransition = false;
+    public GameObject			CollidingPuzzle;
 
 	private KeyCode				interactKey;
 	private KeyCode				interactKeyAlt;
@@ -40,12 +42,18 @@ public class AdventurePlayer : MonoBehaviour {
 
 	void CheckInputInteraction() 
 	{
-		if (IsControllable == true && (Input.GetKeyDown (interactKey) || Input.GetKeyDown (interactKeyAlt))) {
-			Debug.Log("playerPress Interact Key");
-			if (IsInPuzzleInteractZone && CollidingPuzzle)
-			{
-				GameManager.instance.GameController.FpsToPuzzleMode();
-			}
+        if (IsControllable == true && (Input.GetKeyDown(interactKey) || Input.GetKeyDown(interactKeyAlt))) {
+            Debug.Log("playerPress Interact Key");
+            if (IsInPuzzleInteractZone && CollidingPuzzle && !IsInEndZone)
+            {
+                GameManager.instance.GameController.FpsToPuzzleMode();
+            }
+
+            if (IsInEndZone && !IsInEndTransition)
+            {
+                IsInEndTransition = true;
+                GameManager.instance.GameController.OnEndReached();
+            }
 		}
 	}
 
