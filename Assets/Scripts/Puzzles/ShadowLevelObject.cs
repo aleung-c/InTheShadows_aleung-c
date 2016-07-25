@@ -114,6 +114,7 @@ public class ShadowLevelObject : MonoBehaviour {
 		if (PuzzleDoneOrderSent == false) {
 			PuzzleDoneOrderSent = true;
 			Debug.Log ("Puzzle Done !");
+            GetComponent<AudioSource>().Play();
 	        PuzzleDone = true;
 			ShadowGameplay.Clicking = false;
 			ShadowGameplay.enabled = false;

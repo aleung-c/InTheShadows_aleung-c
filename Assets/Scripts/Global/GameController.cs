@@ -34,37 +34,56 @@ public class GameController : MonoBehaviour {
 		}
 
 		GameManager.instance.PlayerGameObject.transform.position = NewPlayerPosition;
-
 		// Open done puzzles.
 		if (SaveManager.CurrentSave.Puzzle1Done == true) {
 			LevelToUnlock = 1;
-			Invoke("DelayedLevelUnlock", 0.1F);
+			Invoke("DelayedLevel1Unlock", 0.1F);
 		}
 		if (SaveManager.CurrentSave.Puzzle2Done == true) {
 			LevelToUnlock = 2;
-			Invoke("DelayedLevelUnlock", 0.1F);
+			Invoke("DelayedLevel2Unlock", 0.1F);
 		}
 		if (SaveManager.CurrentSave.Puzzle3Done == true) {
 			LevelToUnlock = 3;
-			Invoke("DelayedLevelUnlock", 0.1F);
+			Invoke("DelayedLevel3Unlock", 0.1F);
 		}
 		if (SaveManager.CurrentSave.Puzzle4Done == true) {
 			LevelToUnlock = 4;
-			Invoke("DelayedLevelUnlock", 0.1F);
+			Invoke("DelayedLevel4Unlock", 0.1F);
 		}
 		if (SaveManager.CurrentSave.Puzzle5Done == true) {
 			LevelToUnlock = 5;
-			Invoke("DelayedLevelUnlock", 0.1F);
+			Invoke("DelayedLevel5Unlock", 0.1F);
 		}
 
 		// GameStart, no mode selected.
         OnGameStart();
     }
 
-	public void DelayedLevelUnlock()
+	public void DelayedLevel1Unlock()
 	{
-		GameManager.instance.GetShadowLevelScript(LevelToUnlock).UnlockPuzzle();
+		GameManager.instance.GetShadowLevelScript(1).UnlockPuzzle();
 	}
+
+    public void DelayedLevel2Unlock()
+    {
+        GameManager.instance.GetShadowLevelScript(2).UnlockPuzzle();
+    }
+
+    public void DelayedLevel3Unlock()
+    {
+        GameManager.instance.GetShadowLevelScript(3).UnlockPuzzle();
+    }
+
+    public void DelayedLevel4Unlock()
+    {
+        GameManager.instance.GetShadowLevelScript(4).UnlockPuzzle();
+    }
+
+    public void DelayedLevel5Unlock()
+    {
+        GameManager.instance.GetShadowLevelScript(5).UnlockPuzzle();
+    }
 
     public void OnGameStart()
     {

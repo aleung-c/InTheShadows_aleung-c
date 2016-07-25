@@ -10,7 +10,8 @@ public class AdventurePlayer : MonoBehaviour {
 	[Header("Player Gameplay Settings")]
 	public float				WalkingSpeed = 1.0F;
 	public float				RunningSpeed = 2.0F;
-	public float				CameraHeightOffset = 1.0F;
+    public float                FlyingSpeed = 4.0F;
+    public float				CameraHeightOffset = 1.0F;
 
 	// Control required references;
 	public bool					IsControllable = true;

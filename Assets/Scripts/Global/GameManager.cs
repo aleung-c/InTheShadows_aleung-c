@@ -15,10 +15,12 @@ public class GameManager : MonoBehaviour {
 	public GameObject				MenuGameObject;
 	public StartMenuScript			StartMenuScript;
 
-	public bool						TestMode = false;
+    public PlayerMusicHandling      PlayerAudioSourceScript;
 
-	[Header("References to level stuffs")]
-	public ShadowLevelObject[]		SceneShadowLevels;
+    public bool						TestMode = false;
+
+    [Header("References to level stuffs")]
+    public ShadowLevelObject[]      SceneShadowLevels;
 	public ShadowLevelDoor[]		SceneDoors;
 
     [Header("Controller References")]
@@ -55,8 +57,14 @@ public class GameManager : MonoBehaviour {
        
 		// Set game needed elements references
 		PlayerGameObject = GameObject.Find("Player");
-		SceneShadowLevels = GameObject.FindObjectsOfType<ShadowLevelObject> ();
-		SceneDoors = GameObject.FindObjectsOfType<ShadowLevelDoor> ();
+        PlayerAudioSourceScript = PlayerGameObject.GetComponent<PlayerMusicHandling> ();
+        SceneShadowLevels = new ShadowLevelObject[5];
+        SceneShadowLevels[0] = GameObject.Find("ShadowLevel1").GetComponent<ShadowLevelObject>();
+        SceneShadowLevels[1] = GameObject.Find("ShadowLevel2").GetComponent<ShadowLevelObject>();
+        SceneShadowLevels[2] = GameObject.Find("ShadowLevel3").GetComponent<ShadowLevelObject>();
+        SceneShadowLevels[3] = GameObject.Find("ShadowLevel4").GetComponent<ShadowLevelObject>();
+        SceneShadowLevels[4] = GameObject.Find("ShadowLevel5").GetComponent<ShadowLevelObject>();
+        SceneDoors = GameObject.FindObjectsOfType<ShadowLevelDoor> ();
 
         // SaveManager also available as static Class SaveManager.
 		print(Application.persistentDataPath);
