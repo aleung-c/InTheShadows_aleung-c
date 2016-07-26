@@ -107,30 +107,34 @@ public class ShadowGamePlay : MonoBehaviour {
 				newFormPosition.y += Input.GetAxis("MouseVertical") * DisplacementSpeed * Time.deltaTime;
 				newFormPosition.y = Mathf.Clamp(newFormPosition.y, -0.5F, 0.5F);
 				CurrentFormScript.ObjOffset.transform.localPosition = newFormPosition;
-				Debug.Log(CurrentFormScript.ObjOffset.transform.localPosition);
+				//Debug.Log(CurrentFormScript.ObjOffset.transform.localPosition);
 
 			}
-            // Vertical //
+            // Vertical rotation //
 			else if (CurrentFormScript.HasVerticalRotation && pressingVerticalMode)
             {
 				// Using relative rotationning.
 				CurrentFormScript.ObjRotation.transform.rotation =
 					CurrentFormScript.ObjRotation.transform.rotation 
 					* Quaternion.Euler(Input.GetAxis("MouseVertical"), 0, 0);
+                NewFormRotationEuleur = CurrentFormScript.ObjRotation.transform.eulerAngles;
+                //NewFormRotationEuleur.z = 0.0f; // random inverse z rotation fix;
+                CurrentFormScript.ObjRotation.transform.eulerAngles = NewFormRotationEuleur;
             }
-            // Horizontal //
-			else if (CurrentFormScript.HasHorizontalRotation && !pressingVerticalMode)
+            // Horizontal rotation //
+            else if (CurrentFormScript.HasHorizontalRotation && !pressingVerticalMode)
             {
 				// Using world related up vector. (that's the reason for the euler angle conversion).
 				NewFormRotationEuleur = CurrentFormScript.ObjRotation.transform.eulerAngles;
 				NewFormRotationEuleur.y -= Input.GetAxis("MouseHorizontal");
-				newFormRotation = Quaternion.Euler(NewFormRotationEuleur);
+                //NewFormRotationEuleur.z = 0.0F; // random inverse z rotation fix;
+                newFormRotation = Quaternion.Euler(NewFormRotationEuleur);
 				// Rotation horizontal
 				CurrentFormScript.ObjRotation.transform.rotation =
 					Quaternion.RotateTowards(CurrentFormScript.ObjRotation.transform.rotation,
 					                         newFormRotation, 45.0F);
 
-				// Using relative rotationning. Unused, causes confusion when moving both axes.
+				// Using relative rotationning. Unused, causes gameplay confusion when moving both axes.
 					/*CurrentFormScript.ObjRotation.transform.rotation =
 					CurrentFormScript.ObjRotation.transform.rotation 
 						* Quaternion.Euler(0, Input.GetAxis("MouseHorizontal"), 0);*/
