@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class OptionPanelScript : MonoBehaviour {
     private GameSettings        GS;
+    //private GameObject          ResetBtn;
 
 	// Use this for initialization
 	void Start () {
         GS = GameManager.instance.GameSettings;
+        //ResetBtn = transform.Find("ScreenPanel").transform.Find("ResetSaveBtn").gameObject;
     }
     
     public void OnClickSoundBtn() {
