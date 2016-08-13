@@ -8,9 +8,14 @@ public class ShadowObject : MonoBehaviour {
 	public bool					HasVerticalRotation;
 	public bool					HasOffsetDisplacement;
 
+    public bool                 IsSpecialReversible;
+
 	[Header("Realtime Set Variables")]
 	public Quaternion			TargetRotation;
-	public Vector3				TargetPosition;
+    public Quaternion           ReverseTargetRotation;
+    public Quaternion           ReverseTargetRotation2;
+    private Vector3             ReverseTargetEuler;
+    public Vector3				TargetPosition;
 
 	public GameObject			ObjRotation;
 	public GameObject			ObjOffset;
@@ -35,6 +40,19 @@ public class ShadowObject : MonoBehaviour {
 		// Set positions the player must reach
 		TargetRotation = ObjRotation.transform.GetChild(0).transform.rotation;
 		TargetPosition = ObjOffset.transform.position;
+
+        // Fix for reversible forms;
+        if (IsSpecialReversible)
+        {
+            ReverseTargetEuler = ObjRotation.transform.GetChild(0).transform.eulerAngles;
+            ReverseTargetEuler.x = 180.0F;
+            ReverseTargetEuler.y = 180.0F;
+            ReverseTargetRotation = Quaternion.Euler(ReverseTargetEuler);
+            // reversible means multiple solutions (rotation on side ... )
+            ReverseTargetEuler.z = 180.0F;
+            ReverseTargetRotation2 = Quaternion.Euler(ReverseTargetEuler);
+
+        }
 
 		// Required for quick subscribing to FormClickCatcher events.
 		ClickCatcher = GetComponentInChildren<FormClickCatcher> ();

@@ -17,6 +17,10 @@ public class UIFormStatus : MonoBehaviour {
 
     private bool        	Active = false;
 	private float			CurAngleDiff;
+    // Reversible form fix;
+    private float           CurAngleDiff2;
+    private float           CurAngleDiff3;
+
 	private float			CurPosDiff;
 	private float			PercentageCalculation;
 	private ShadowObject	FormScript;
@@ -50,6 +54,11 @@ public class UIFormStatus : MonoBehaviour {
 		// Update Angle Value display;
 		CurAngleDiff = Quaternion.Angle (FormScript.TargetRotation, FormScript.ObjRotation.transform.GetChild(0).transform.rotation);
 
+        if (FormScript.IsSpecialReversible)
+        {
+            CurAngleDiff = GetLowerAngleDiffForReversibleForm(CurAngleDiff);
+        }
+
 		// Make it look like a percentage
 		PercentageCalculation = 100.0F - CurAngleDiff;
 		if (PercentageCalculation < 0.0F)
@@ -59,7 +68,7 @@ public class UIFormStatus : MonoBehaviour {
 		// Update OffsetPosition Value display;
 		if (FormScript.HasOffsetDisplacement)
 		{
-			CurPosDiff = Vector3.Distance(FormScript.TargetPosition, FormScript.ObjOffset.transform.position) * 10.0F;
+			CurPosDiff = Vector3.Distance(FormScript.TargetPosition, FormScript.ObjOffset.transform.position) * 100.0F;
 			//Debug.Log(CurPosDiff);
 			PercentageCalculation = 100.0F - CurPosDiff;
 			if (PercentageCalculation < 0.0F)
@@ -70,6 +79,17 @@ public class UIFormStatus : MonoBehaviour {
 		{
 			FormStatusPositionText.text = "OK";
 		}
+    }
+
+    float GetLowerAngleDiffForReversibleForm(float curAngleDiff)
+    {
+        CurAngleDiff2 = Quaternion.Angle(FormScript.ReverseTargetRotation, FormScript.ObjRotation.transform.GetChild(0).transform.rotation);
+        CurAngleDiff3 = Quaternion.Angle(FormScript.ReverseTargetRotation2, FormScript.ObjRotation.transform.GetChild(0).transform.rotation);
+        if (CurAngleDiff2 < curAngleDiff && CurAngleDiff2 < CurAngleDiff3)
+            return (CurAngleDiff2);
+        if (CurAngleDiff3 < curAngleDiff && CurAngleDiff3 < CurAngleDiff2)
+            return (CurAngleDiff3);
+        return (curAngleDiff);
     }
 
     IEnumerator UpdateUIStatusRoutine()

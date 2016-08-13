@@ -37,16 +37,21 @@ public class ShadowGameWinCheck : MonoBehaviour {
 			Child.GetComponent<ShadowObject> ().OrderSentFormDone = false;
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		CurNbOfCorrect = 0;
-		foreach (Transform Child in FormContainer.transform)
-		{
-			childScript = Child.GetComponent<ShadowObject> ();
-			objRotation = childScript.ObjRotation;
-			targetRotation = childScript.TargetRotation;
-			if (Quaternion.Angle(targetRotation, objRotation.transform.GetChild(0).transform.rotation) < checkMarginRotation)
+
+    // Update is called once per frame
+    void Update() {
+        CurNbOfCorrect = 0;
+        foreach (Transform Child in FormContainer.transform)
+        {
+            childScript = Child.GetComponent<ShadowObject>();
+            objRotation = childScript.ObjRotation;
+            targetRotation = childScript.TargetRotation;
+            if (Quaternion.Angle(targetRotation, objRotation.transform.GetChild(0).transform.rotation) < checkMarginRotation
+                // Fix reversible form;
+                || (childScript.IsSpecialReversible == true
+                && ((Quaternion.Angle(childScript.ReverseTargetRotation, objRotation.transform.GetChild(0).transform.rotation) < checkMarginRotation)
+                    || (Quaternion.Angle(childScript.ReverseTargetRotation2, objRotation.transform.GetChild(0).transform.rotation) < checkMarginRotation)))
+                )
 			{
                 //if (childScript.HasOffsetDisplacement)
                 //    Debug.Log(Vector3.Distance(childScript.TargetPosition, childScript.ObjOffset.transform.position));
