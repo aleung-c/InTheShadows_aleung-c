@@ -31,8 +31,11 @@ public class GameManager : MonoBehaviour {
 	[Header("SaveStatus")]
 	public List<bool>				SaveOfPuzzleDones = new List<bool>();
 
-	//Awake is always called before any Start functions
-	void Awake()
+    // All the sound sources in the game;
+    AudioSource[] SoundSources;
+
+    //Awake is always called before any Start functions
+    void Awake()
 	{
 		if (instance == null) {
 			instance = this;
@@ -65,11 +68,11 @@ public class GameManager : MonoBehaviour {
         SceneShadowLevels[3] = GameObject.Find("ShadowLevel4").GetComponent<ShadowLevelObject>();
         SceneShadowLevels[4] = GameObject.Find("ShadowLevel5").GetComponent<ShadowLevelObject>();
         SceneDoors = GameObject.FindObjectsOfType<ShadowLevelDoor> ();
+        SoundSources = GameObject.FindObjectsOfType<AudioSource>();
 
         // SaveManager also available as static Class SaveManager.
-		print(Application.persistentDataPath);
+        // print(Application.persistentDataPath); // to know where the saves are.
         SaveManager.LoadGameFile();
-
 
 		SaveOfPuzzleDones.Add (false);
 		SaveOfPuzzleDones.Add (false);
@@ -120,18 +123,22 @@ public class GameManager : MonoBehaviour {
 		}
 		return (null);
 	}
-
-	// unused for now ?
-    public void LoadSaveFile()
+       
+    // Super Command : Turn off or on all sounds;
+    public void TurnOffSounds()
     {
-
+        foreach(AudioSource Source in SoundSources)
+        {
+            Source.enabled = false;
+        }
     }
 
-
-
-    public void ResetSaveFile()
+    public void TurnOnSounds()
     {
-
+        foreach (AudioSource Source in SoundSources)
+        {
+            Source.enabled = true;
+        }
     }
 
     //Update is called every frame.
