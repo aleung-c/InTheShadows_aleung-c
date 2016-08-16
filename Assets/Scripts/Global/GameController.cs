@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
 	public bool					InFpsMode = true;
 	public bool					InPuzzleMode = false;
 	public ShadowLevelObject	ShadowLevelSelected;
+	public bool					InScreenTransition;
 
 	private int					LevelToUnlock;
 	private Vector3				NewPlayerPosition;
@@ -89,20 +90,28 @@ public class GameController : MonoBehaviour {
     {
         Debug.Log("GameController: GameStarting! No mode selected.");
         GameManager.instance.CameraController.BlackScreenTransition();
+		InScreenTransition = false;
     }
 
     public void OnResetSaveOrdered()
     {
-        Debug.Log("GameController: Reset save ordered!");
-        GameManager.instance.CameraController.BlackScreenTransition();
-        GameManager.instance.StartMenuScript.OnClickOptionsBack();
-        Invoke("DelayedSaveReset", 2.5F);
-    }
+		if (InScreenTransition == false)
+		{
+			Debug.Log ("GameController: Reset save ordered!");
+			GameManager.instance.CameraController.BlackScreenTransition ();
+			InScreenTransition = true;
+			GameManager.instance.StartMenuScript.OnClickOptionsBack ();
+			Invoke ("DelayedSaveReset", 3.0F);
+		}
+	}
 
     public void DelayedSaveReset()
     {
         // When screen is black.
         // Replace player and camera;
+		if (GameManager.instance.TestMode == true) {
+			OnNormalModeOrdered();
+		}
         GameManager.instance.PlayerGameObject.transform.position = GameObject.Find("PlayerStart").transform.position;
         GameManager.instance.CameraController.ActiveCamera.transform.LookAt(GameObject.Find("PlayerStartLookPoint").transform);
         // Close puzzles.
@@ -113,7 +122,14 @@ public class GameController : MonoBehaviour {
         SaveManager.CurrentSave = new SaveObject();
         GameManager.instance.CameraController.BlackScreenTransition();
         GameManager.instance.SaveGameDatasFromWorld();
+		Invoke ("TimerToOutOfScreenTransition", 3.0F);
     }
+
+	// to refuse another reset save during the transition;
+	public void TimerToOutOfScreenTransition()
+	{
+		InScreenTransition = false;
+	}
 
 	public void OnNormalModeOrdered ()
 	{
@@ -187,6 +203,7 @@ public class GameController : MonoBehaviour {
 	{
 		// When camera finishes transition, send event invoke();
 		// Debug.Log ("endtransition");
+		InScreenTransition = false;
 		if (InPuzzleMode == true) // == transitionning from FPS to PUZZLE;
 		{
 			ShadowLevelSelected.Playable = true;
@@ -237,6 +254,7 @@ public class GameController : MonoBehaviour {
         GameManager.instance.PlayerGameObject.GetComponent<FpsCameraControl>().enabled = false;
         GameManager.instance.PlayerGameObject.GetComponent<FpsMovement>().enabled = false;
         // transitionning to end and reset;
+		InScreenTransition = true;
         Invoke("DelayedSaveResetEndGame", 2.5F);
     }
 
@@ -259,6 +277,7 @@ public class GameController : MonoBehaviour {
         GameManager.instance.PlayerGameObject.GetComponent<FpsCameraControl>().enabled = true;
         GameManager.instance.PlayerGameObject.GetComponent<FpsMovement>().enabled = true;
         GameManager.instance.PlayerGameObject.GetComponent<AdventurePlayer>().IsInEndTransition = false;
+		InScreenTransition = false;
     }
 
     // Update is called once per frame

@@ -10,7 +10,7 @@ public class OptionPanelScript : MonoBehaviour {
     private Text                SoundOptionText2;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         GS = GameManager.instance.GameSettings;
         // Get Options Values text to set;
         SoundOptionText1 = transform.Find("ScreenPanel").transform.Find("SoundBtn").transform.Find("Text").GetComponent<Text>();

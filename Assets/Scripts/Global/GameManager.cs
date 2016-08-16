@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour {
         SoundSources = GameObject.FindObjectsOfType<AudioSource>();
 
         // SaveManager also available as static Class SaveManager.
-        // print(Application.persistentDataPath); // to know where the saves are.
+        print(Application.persistentDataPath); // to know where the saves are.
         SaveManager.LoadGameFile();
 
 		SaveOfPuzzleDones.Add (false);
