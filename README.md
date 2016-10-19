@@ -9,6 +9,6 @@ This point of gameplay can make a lot of difference between a funnily resolvable
 
 Concerning the level design, I made intensive use of Blender, to be able to make the actual tower i wanted to have, and imported the towers parts into unity. This caused a lot of optimization issues, that I fixed through researching unity engine's optimization points.
 
-![Alt text](./cover/light_online_demo_screen1.png "light online screen 1")
+![Alt text](./cover/in_the_shadows_screen1.jpg "in the shadow screen 1")
 
-![Alt text](./cover/light_online_demo_screen2.png "light online screen 2")
+![Alt text](./cover/in_the_shadows_screen2.jpg "in the shadow screen 2")
